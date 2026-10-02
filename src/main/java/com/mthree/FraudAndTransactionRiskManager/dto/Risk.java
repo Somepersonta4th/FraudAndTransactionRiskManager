@@ -1,5 +1,5 @@
 package com.mthree.FraudAndTransactionRiskManager.dto;
 
 //unfinished
-public class BankAccount {
+public class Risk {
 }

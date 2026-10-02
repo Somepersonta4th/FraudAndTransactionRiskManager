@@ -1,7 +1,7 @@
 package com.mthree.FraudAndTransactionRiskManager.service;
 
 //unfinished
-import com.mthree.FraudAndTransactionRiskManager.dto.BankAccount;
+import com.mthree.FraudAndTransactionRiskManager.dto.Account;
 
 import java.util.List;
 
@@ -9,10 +9,10 @@ public interface AccountService {
 
     public void updateAccounts();
 
-    public List<BankAccount> getAccounts();
+    public List<Account> getAccounts();
 
-    public List<BankAccount> searchAccounts(String searchString);
+    public List<Account> searchAccounts(String searchString);
 
-    public BankAccount getAccount(int accountID);
+    public Account getAccount(int accountID);
 
 }
