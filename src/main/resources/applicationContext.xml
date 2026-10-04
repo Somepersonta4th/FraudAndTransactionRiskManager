@@ -21,4 +21,8 @@
           class="com.mthree.FraudAndTransactionRiskManager.controller.Controller">
     </bean>
 
+    <bean id = "Import"
+          class = "com/mthree/FraudAndTransactionRiskManager/Import/PlaidImport.java">
+    </bean>
+
 </beans>
