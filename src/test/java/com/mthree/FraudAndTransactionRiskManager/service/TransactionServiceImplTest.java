@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TransactionServiceImplTest extends TestCase {
 
-    private TransactionService transactionService = new TransactionServiceImpl(new TransactionDaoStub());
+    private TransactionService transactionService = new TransactionServiceImpl(new TransactionDaoStub(), new SearchServiceImpl());
 
     @Test
     void searchTransaction() {
