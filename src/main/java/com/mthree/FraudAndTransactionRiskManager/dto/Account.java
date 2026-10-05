@@ -88,4 +88,18 @@ public class Account {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", available=" + available +
+                ", current='" + current + '\'' +
+                ", currencyCode='" + currencyCode + '\'' +
+                ", mask='" + mask + '\'' +
+                ", type='" + type + '\'' +
+                ", subType='" + subType + '\'' +
+                '}';
+    }
 }
