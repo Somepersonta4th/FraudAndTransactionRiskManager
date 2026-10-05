@@ -11,7 +11,7 @@ public interface TransactionService {
 
     public List<Transaction> getTransactions();
 
-    public Transaction getTransaction(int transactionID);
+    public Transaction getTransaction(String transactionID);
 
     public List<Transaction> searchTransactions(String searchString);
 

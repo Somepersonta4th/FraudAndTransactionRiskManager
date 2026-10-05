@@ -27,9 +27,18 @@ public class TransactionDaoStub implements TransactionDao {
         newTransaction.setDescription("fghijkl");
         transactions.add(newTransaction);
     }
+    @Override
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
 
     @Override
-    public ArrayList<Transaction> getAccounts() {
-        return transactions;
+    public void updateTransactions() {
+
+    }
+
+    @Override
+    public Transaction getTransaction(String transactionID) {
+        return transactions.get(0);
     }
 }

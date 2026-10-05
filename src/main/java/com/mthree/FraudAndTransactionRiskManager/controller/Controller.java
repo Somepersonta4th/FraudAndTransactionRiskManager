@@ -30,6 +30,12 @@ public class Controller {
         return accountService.searchAccounts(searchString);
     }
 
+    @GetMapping("/accounts/get-transactions/{accountID}")
+    public List<Transaction> getAccountTransactions(@PathVariable String accountID) {
+        auditService.writeToAudit("getAccountTransactions:" + accountID);
+        return accountService.getTransactionsForAccount(accountID);
+    }
+
     @GetMapping("/{testString}")
     public String test(@PathVariable String testString) {
         return testString + "test";

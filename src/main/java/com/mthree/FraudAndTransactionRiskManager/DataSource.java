@@ -14,7 +14,7 @@ public class DataSource {
         ds.setDatabaseName("FraudDB");
         ds.setUser("root");
         //Will need to be changed for other computers!!!
-        ds.setPassword("root");
+        ds.setPassword(System.getenv("DB_PASS"));
         ////////////////////////////////////////////
         ds.setAllowPublicKeyRetrieval(true);
         return ds;

@@ -2,6 +2,7 @@ package com.mthree.FraudAndTransactionRiskManager.service;
 
 //unfinished
 import com.mthree.FraudAndTransactionRiskManager.dto.Account;
+import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface AccountService {
 
     public List<Account> searchAccounts(String searchString, List<Account> accounts);
 
-    public Account getAccount(int accountID);
+    public Account getAccount(String accountID);
+
+    public List<Transaction> getTransactionsForAccount(String accountID);
 
 }

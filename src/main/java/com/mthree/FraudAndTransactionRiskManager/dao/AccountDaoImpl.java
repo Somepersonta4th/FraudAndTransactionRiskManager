@@ -48,4 +48,14 @@ public class AccountDaoImpl implements AccountDao {
 
         return accounts;
     }
+
+    @Override
+    public void updateAccounts() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Account getAccount(String accountID) {
+        throw new UnsupportedOperationException();
+    }
 }
