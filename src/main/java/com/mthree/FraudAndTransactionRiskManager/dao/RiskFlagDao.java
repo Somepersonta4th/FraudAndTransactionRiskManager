@@ -9,9 +9,9 @@ public interface RiskFlagDao {
 
     RiskFlag createFlag(RiskFlag flag);
 
-    boolean flagExists(int transactionId, int ruleId);
+    boolean flagExists(String transactionId, int ruleId);
 
-    List<RiskFlag> findFlagsByAccountId(int accountId);
+    List<RiskFlag> findFlagsByAccountId(String accountId);
 
-    List<RiskFlag> findFlagsByTransactionId(int transactionId);
+    List<RiskFlag> findFlagsByTransactionId(String transactionId);
 }

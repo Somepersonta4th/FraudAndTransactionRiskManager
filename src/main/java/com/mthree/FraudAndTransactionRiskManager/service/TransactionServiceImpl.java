@@ -1,7 +1,9 @@
 package com.mthree.FraudAndTransactionRiskManager.service;
 
 import com.mthree.FraudAndTransactionRiskManager.dao.TransactionDao;
+import com.mthree.FraudAndTransactionRiskManager.dto.RiskFlag;
 import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
+import com.mthree.FraudAndTransactionRiskManager.dto.wrappers.TransactionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     private SearchService searchService;
+
+    @Autowired
+    private RiskService riskService;
 
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -38,6 +43,26 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction getTransaction(String transactionID) {
         return transactionDao.findTransactionById(transactionID);
+    }
+
+    @Override
+    public TransactionWrapper getTransactionInfo(String transactionID) {
+        TransactionWrapper wrapper = new TransactionWrapper();
+
+        wrapper.setTransaction(getTransaction(transactionID));
+        if (wrapper.getTransaction() == null) {
+            //return with null contents
+            return wrapper;
+        }
+
+        wrapper.setRiskFlags(getRiskFlagsForTransaction(transactionID));
+
+        return wrapper;
+    }
+
+    @Override
+    public List<RiskFlag> getRiskFlagsForTransaction(String transactionID) {
+        return riskService.getRiskFlagForTransaction(transactionID);
     }
 
     /*
