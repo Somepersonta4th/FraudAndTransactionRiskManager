@@ -6,8 +6,4 @@ import java.util.ArrayList;
 
 public interface AccountDao {
     ArrayList<Account> getAccounts();
-
-    void updateAccounts();
-
-    Account getAccount(String accountID);
 }
