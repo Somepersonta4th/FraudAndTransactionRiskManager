@@ -48,21 +48,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getAccount(String accountID) {
-        return accountDao.getAccount(accountID);
+        return accountDao.findAccountById(accountID);
     }
 
     @Override
     public List<Transaction> getTransactionsForAccount(String accountID) {
-        if (accountDao.getAccount(accountID) == null) {
+        if (accountDao.findAccountById(accountID) == null) {
             return null;
         }
 
-        List<Transaction> transactions = new ArrayList<>();
-        for (Transaction transaction : transactionService.getTransactions()) {
-            if (transaction.getAccountId().equals(accountID)) {
-                transactions.add(transaction);
-            }
-        }
-        return List.of();
+        return transactionService.getTransactionsForAccount(accountID);
     }
 }

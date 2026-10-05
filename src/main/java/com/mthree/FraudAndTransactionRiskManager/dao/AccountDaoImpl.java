@@ -50,12 +50,17 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void updateAccounts() {
-        throw new UnsupportedOperationException();
+    public Account findAccountById(String accountId) {
+        return null;
     }
 
     @Override
-    public Account getAccount(String accountID) {
-        throw new UnsupportedOperationException();
+    public List<Account> getAllAccounts() {
+        return List.of();
+    }
+
+    @Override
+    public void updateAccounts() {
+
     }
 }

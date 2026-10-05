@@ -11,9 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-
-
+import java.util.List;
 
 
 @Repository
@@ -63,7 +61,12 @@ public class TransactionDaoImpl implements TransactionDao{
     }
 
     @Override
-    public Transaction findCaseById(String transactionID) {
-        throw new UnsupportedOperationException();
+    public Transaction findTransactionById(String transactionId) {
+        return null;
+    }
+
+    @Override
+    public List<Transaction> findTransactionsByAccountId(String accountId) {
+        return List.of();
     }
 }

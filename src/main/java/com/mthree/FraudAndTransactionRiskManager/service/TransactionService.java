@@ -16,4 +16,6 @@ public interface TransactionService {
     public List<Transaction> searchTransactions(String searchString);
 
     public List<Transaction> searchTransactions(String searchString, List<Transaction> transactions);
+
+    public List<Transaction> getTransactionsForAccount(String accountID);
 }

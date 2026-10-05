@@ -37,7 +37,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction getTransaction(String transactionID) {
-        return transactionDao.findCaseById(transactionID);
+        return transactionDao.findTransactionById(transactionID);
     }
 
     /*
@@ -56,6 +56,11 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Transaction> searchTransactions(String searchString, List<Transaction> transactions) {
         return (List<Transaction>) searchService.searchObjectsBy(searchString, transactions);
+    }
+
+    @Override
+    public List<Transaction> getTransactionsForAccount(String accountID) {
+        return transactionDao.findTransactionsByAccountId(accountID);
     }
 
 
