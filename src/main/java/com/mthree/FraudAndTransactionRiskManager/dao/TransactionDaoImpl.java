@@ -56,4 +56,14 @@ public class TransactionDaoImpl implements TransactionDao{
 
         return transactions;
     }
+
+    @Override
+    public void updateTransactions() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Transaction findCaseById(String transactionID) {
+        throw new UnsupportedOperationException();
+    }
 }

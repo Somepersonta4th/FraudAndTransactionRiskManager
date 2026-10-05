@@ -27,17 +27,17 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void updateTransactions() {
-        throw new UnsupportedOperationException();
+        transactionDao.updateTransactions();
     }
 
     @Override
     public List<Transaction> getTransactions() {
-        throw new UnsupportedOperationException();
+        return transactionDao.getTransactions();
     }
 
     @Override
-    public Transaction getTransaction(int transactionID) {
-        throw new UnsupportedOperationException();
+    public Transaction getTransaction(String transactionID) {
+        return transactionDao.findCaseById(transactionID);
     }
 
     /*
@@ -50,7 +50,7 @@ public class TransactionServiceImpl implements TransactionService {
      */
     @Override
     public List<Transaction> searchTransactions(String searchString) {
-        return searchTransactions(searchString,transactionDao.getTransactions());
+        return searchTransactions(searchString,getTransactions());
     }
 
     @Override

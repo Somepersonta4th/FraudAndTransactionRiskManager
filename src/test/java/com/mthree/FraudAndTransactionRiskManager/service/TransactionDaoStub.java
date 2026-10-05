@@ -2,10 +2,8 @@ package com.mthree.FraudAndTransactionRiskManager.service;
 
 import com.mthree.FraudAndTransactionRiskManager.dao.TransactionDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TransactionDaoStub implements TransactionDao {
 
@@ -27,9 +25,18 @@ public class TransactionDaoStub implements TransactionDao {
         newTransaction.setDescription("fghijkl");
         transactions.add(newTransaction);
     }
+    @Override
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
 
     @Override
-    public ArrayList<Transaction> getAccounts() {
-        return transactions;
+    public void updateTransactions() {
+
+    }
+
+    @Override
+    public Transaction findCaseById(String transactionID) {
+        return transactions.get(0);
     }
 }

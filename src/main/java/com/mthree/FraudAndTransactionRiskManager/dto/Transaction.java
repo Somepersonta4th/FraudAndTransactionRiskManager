@@ -165,9 +165,13 @@ public class Transaction {
         return "Transaction{" +
                 "id='" + id + '\'' +
                 ", accountId='" + accountId + '\'' +
+                ", plaidTransactionId='" + plaidTransactionId + '\'' +
                 ", amount=" + amount +
                 ", currencyCode='" + currencyCode + '\'' +
                 ", description='" + description + '\'' +
+                ", merchantName='" + merchantName + '\'' +
+                ", merchantEntityId='" + merchantEntityId + '\'' +
+                ", merchantCategoryCode='" + merchantCategoryCode + '\'' +
                 ", primaryCategory='" + primaryCategory + '\'' +
                 ", detailedCategory='" + detailedCategory + '\'' +
                 ", channel='" + channel + '\'' +
@@ -178,5 +182,4 @@ public class Transaction {
                 ", pending=" + pending +
                 '}';
     }
-
 }
