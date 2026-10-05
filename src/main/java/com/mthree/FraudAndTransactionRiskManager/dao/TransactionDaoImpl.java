@@ -63,7 +63,7 @@ public class TransactionDaoImpl implements TransactionDao{
     }
 
     @Override
-    public Transaction getTransaction(String transactionID) {
+    public Transaction findCaseById(String transactionID) {
         throw new UnsupportedOperationException();
     }
 }
