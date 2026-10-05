@@ -6,4 +6,8 @@ import java.util.ArrayList;
 
 public interface TransactionDao {
     public ArrayList<Transaction> getTransactions();
+
+    void updateTransactions();
+
+    Transaction findCaseById(String transactionID);
 }
