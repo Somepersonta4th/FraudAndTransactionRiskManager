@@ -12,9 +12,13 @@ public class Transaction {
 
     private String id;
     private String accountId;
+    private String plaidTransactionId;
     private BigDecimal amount;
     private String currencyCode;
     private String description;
+    private String merchantName;
+    private String merchantEntityId;
+    private String merchantCategoryCode;
     private String primaryCategory;
     private String detailedCategory;
     private String channel;
@@ -31,6 +35,9 @@ public class Transaction {
     public String getAccountId() {
         return accountId;
     }
+
+    public String getPlaidTransactionId() { return plaidTransactionId; }
+    public void setPlaidTransactionId(String plaidTransactionId) { this.plaidTransactionId = plaidTransactionId; }
 
     public BigDecimal getAmount() {
         return amount;
@@ -70,6 +77,15 @@ public class Transaction {
     public String getDescription() {
         return description;
     }
+
+    public String getMerchantName() { return merchantName; }
+    public void setMerchantName(String merchantName) { this.merchantName = merchantName; }
+
+    public String getMerchantEntityId() { return merchantEntityId; }
+    public void setMerchantEntityId(String merchantEntityId) { this.merchantEntityId = merchantEntityId; }
+
+    public String getMerchantCategoryCode() { return merchantCategoryCode; }
+    public void setMerchantCategoryCode(String merchantCategoryCode) { this.merchantCategoryCode = merchantCategoryCode; }
 
     public String getDetailedCategory() {
         return detailedCategory;
