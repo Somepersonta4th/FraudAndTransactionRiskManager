@@ -13,6 +13,8 @@ public interface AccountService {
 
     public List<Account> searchAccounts(String searchString);
 
+    public List<Account> searchAccounts(String searchString, List<Account> accounts);
+
     public Account getAccount(int accountID);
 
 }

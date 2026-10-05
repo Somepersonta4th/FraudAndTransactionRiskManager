@@ -163,20 +163,4 @@ public class Transaction {
                 '}';
     }
 
-    public String toStringRaw() {
-        return id + " " +
-                accountId + " " +
-                amount + " " +
-                currencyCode + " " +
-                description + " " +
-                primaryCategory + " " +
-                detailedCategory + " " +
-                channel + " " +
-                dateTransaction + " " +
-                dateAuthorised + " " +
-                city + " " +
-                country + " " +
-                pending;
-    }
-
 }

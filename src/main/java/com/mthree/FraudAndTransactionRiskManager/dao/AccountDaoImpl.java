@@ -3,6 +3,7 @@ package com.mthree.FraudAndTransactionRiskManager.dao;
 import com.mthree.FraudAndTransactionRiskManager.DataSource;
 import com.mthree.FraudAndTransactionRiskManager.dto.Account;
 import com.mysql.cj.jdbc.MysqlDataSource;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class AccountDaoImpl implements AccountDao {
 
     MysqlDataSource ds;

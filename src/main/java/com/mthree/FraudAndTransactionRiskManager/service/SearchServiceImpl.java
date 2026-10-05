@@ -15,6 +15,29 @@ public class SearchServiceImpl implements SearchService {
     private final NormalizedLevenshtein LEVENSHTEIN = new NormalizedLevenshtein();
     private final double LEVENSHTEIN_THRESHOLD = 0.75;
 
+    /*
+    * fuzzy mapping with replacing terms
+
+    private static final Map<String,List<String>> fuzzyMapping = new HashMap<>();
+
+    static {
+        registerFuzzyMapping("l","1");
+        registerFuzzyMapping("e","3");
+        registerFuzzyMapping("s","5");
+        registerFuzzyMapping("i","y");
+        registerFuzzyMapping("inc","corp");
+        registerFuzzyMapping("inc","ltd");
+        registerFuzzyMapping("inc","co");
+        registerFuzzyMapping("inc","llc");
+    }
+
+    private static void registerFuzzyMapping(String value1, String value2) {
+        fuzzyMapping.computeIfAbsent(value1,k->new ArrayList<>()).add(value2);
+        fuzzyMapping.computeIfAbsent(value2,k->new ArrayList<>()).add(value1);
+    }
+
+     */
+
     @Override
     public List<?> searchObjectsBy(String searchString, List<?> objects) {
         if (searchString == null || searchString.trim().isEmpty() || searchString.trim().equals("*"))
