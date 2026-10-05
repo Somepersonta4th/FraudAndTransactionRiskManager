@@ -1,0 +1,42 @@
+package com.mthree.FraudAndTransactionRiskManager.dao;
+
+import com.mthree.FraudAndTransactionRiskManager.DataSource;
+import com.mthree.FraudAndTransactionRiskManager.dao.Mappers.TransactionMapper;
+import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
+import com.mysql.cj.jdbc.MysqlDataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TransactionDaoJDBC implements TransactionDao{
+    private final JdbcTemplate jdbc;
+
+    public TransactionDaoJDBC(JdbcTemplate j) throws SQLException {
+        jdbc = j;
+    }
+
+    @Override
+    public List<Transaction> getTransactions(){
+        return jdbc.query("SELECT * FROM Transactions", new TransactionMapper());
+    }
+
+    @Override
+    public void updateTransactions() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Transaction findTransactionById(String transactionId) {
+        return jdbc.query("SELECT * FROM Transactions WHERE id = " + transactionId, new TransactionMapper()).get(0);
+    }
+
+    @Override
+    public List<Transaction> findTransactionsByAccountId(String accountId) {
+        return jdbc.query("SELECT * FROM Transactions WHERE account_id = " + accountId, new TransactionMapper());
+    }
+}

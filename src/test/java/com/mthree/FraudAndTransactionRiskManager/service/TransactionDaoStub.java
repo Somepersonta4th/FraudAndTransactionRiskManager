@@ -4,6 +4,7 @@ import com.mthree.FraudAndTransactionRiskManager.dao.TransactionDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionDaoStub implements TransactionDao {
 
@@ -26,7 +27,7 @@ public class TransactionDaoStub implements TransactionDao {
         transactions.add(newTransaction);
     }
     @Override
-    public ArrayList<Transaction> getTransactions() {
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 

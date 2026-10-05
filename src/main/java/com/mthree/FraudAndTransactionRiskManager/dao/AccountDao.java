@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface AccountDao {
-    ArrayList<Account> getAccounts();
 
     Account findAccountById(String accountId);
 
-    List<Account> getAllAccounts();
+    List<Account> getAccounts();
 
     void updateAccounts();
 }

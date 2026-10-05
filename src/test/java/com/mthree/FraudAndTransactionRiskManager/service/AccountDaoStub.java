@@ -4,6 +4,7 @@ import com.mthree.FraudAndTransactionRiskManager.dao.AccountDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Account;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDaoStub implements AccountDao {
 
@@ -27,7 +28,7 @@ public class AccountDaoStub implements AccountDao {
     }
 
     @Override
-    public ArrayList<Account> getAccounts() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 }

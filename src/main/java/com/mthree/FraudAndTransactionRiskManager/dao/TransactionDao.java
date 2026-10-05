@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface TransactionDao {
-    public ArrayList<Transaction> getTransactions();
+    public List<Transaction> getTransactions();
 
     void updateTransactions();
 

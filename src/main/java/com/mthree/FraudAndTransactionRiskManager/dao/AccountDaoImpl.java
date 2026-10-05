@@ -54,10 +54,7 @@ public class AccountDaoImpl implements AccountDao {
         return null;
     }
 
-    @Override
-    public List<Account> getAllAccounts() {
-        return List.of();
-    }
+
 
     @Override
     public void updateAccounts() {
