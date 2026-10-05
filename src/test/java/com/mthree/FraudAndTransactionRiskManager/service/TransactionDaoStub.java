@@ -29,7 +29,7 @@ public class TransactionDaoStub implements TransactionDao {
     }
 
     @Override
-    public ArrayList<Transaction> getTransactions() {
+    public ArrayList<Transaction> getAccounts() {
         return transactions;
     }
 }

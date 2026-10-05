@@ -2,7 +2,6 @@ package com.mthree.FraudAndTransactionRiskManager.service;
 
 import com.mthree.FraudAndTransactionRiskManager.dao.TransactionDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
-import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,30 +20,6 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-
-    /*
-    * fuzzy mapping with replacing terms
-
-    private static final Map<String,List<String>> fuzzyMapping = new HashMap<>();
-
-    static {
-        registerFuzzyMapping("l","1");
-        registerFuzzyMapping("e","3");
-        registerFuzzyMapping("s","5");
-        registerFuzzyMapping("i","y");
-        registerFuzzyMapping("inc","corp");
-        registerFuzzyMapping("inc","ltd");
-        registerFuzzyMapping("inc","co");
-        registerFuzzyMapping("inc","llc");
-    }
-
-    private static void registerFuzzyMapping(String value1, String value2) {
-        fuzzyMapping.computeIfAbsent(value1,k->new ArrayList<>()).add(value2);
-        fuzzyMapping.computeIfAbsent(value2,k->new ArrayList<>()).add(value1);
-    }
-
-     */
-
     public TransactionServiceImpl(TransactionDao transactionDao, SearchService searchService) {
         this.transactionDao = transactionDao;
         this.searchService = searchService;
@@ -52,17 +27,17 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void updateTransactions() {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<Transaction> getTransactions() {
-        return List.of();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Transaction getTransaction(int transactionID) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /*
@@ -80,9 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> searchTransactions(String searchString, List<Transaction> transactions) {
-
         return (List<Transaction>) searchService.searchObjectsBy(searchString, transactions);
-
     }
 
 
