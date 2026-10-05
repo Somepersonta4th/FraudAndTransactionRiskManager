@@ -9,15 +9,15 @@ public class Account {
 
     private String id;
     private String name;
-    private String plaidAccountId;
-    private String officialName;
+
     private BigDecimal available;
+
     private String current;
+
     private String currencyCode;
     private String mask;
     private String type;
     private String subType;
-    private boolean frozen;
 
     public String getId() {
         return id;
@@ -54,12 +54,6 @@ public class Account {
         return subType;
     }
 
-    public String getPlaidAccountId() { return plaidAccountId; }
-    public void setPlaidAccountId(String plaidAccountId) { this.plaidAccountId = plaidAccountId; }
-
-    public String getOfficialName() { return officialName; }
-    public void setOfficialName(String officialName) { this.officialName = officialName; }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -94,7 +88,4 @@ public class Account {
     public void setType(String type) {
         this.type = type;
     }
-
-    public boolean isFrozen() { return frozen; }
-    public void setFrozen(boolean frozen) { this.frozen = frozen; }
 }
