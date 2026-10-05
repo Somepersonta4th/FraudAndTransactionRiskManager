@@ -37,4 +37,11 @@ public class TransactionServiceImplTest extends TestCase {
         Assertions.assertEquals(2,results.size(),"Should return 2 results");
     }
 
+    @Test
+    void getTransactionByID() {
+        Transaction result = transactionService.getTransaction("1");
+
+        Assertions.assertEquals("abcdef",result.getDescription());
+    }
+
 }

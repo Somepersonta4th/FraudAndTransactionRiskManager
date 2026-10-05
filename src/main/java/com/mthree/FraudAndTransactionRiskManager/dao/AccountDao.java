@@ -8,7 +8,9 @@ import java.util.List;
 public interface AccountDao {
     ArrayList<Account> getAccounts();
 
-    Account findAccountById(int accountId);
+    Account findAccountById(String accountId);
 
     List<Account> getAllAccounts();
+
+    void updateAccounts();
 }

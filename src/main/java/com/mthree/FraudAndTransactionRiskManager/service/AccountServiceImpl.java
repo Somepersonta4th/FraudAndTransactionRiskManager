@@ -2,9 +2,11 @@ package com.mthree.FraudAndTransactionRiskManager.service;
 
 import com.mthree.FraudAndTransactionRiskManager.dao.AccountDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Account;
+import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,17 +28,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateAccounts() {
-        throw new UnsupportedOperationException();
+        accountDao.updateAccounts();
     }
 
     @Override
     public List<Account> getAccounts() {
-        throw new UnsupportedOperationException();
+        return accountDao.getAccounts();
     }
 
     @Override
     public List<Account> searchAccounts(String searchString) {
-        return searchAccounts(searchString,accountDao.getAccounts());
+        return searchAccounts(searchString,getAccounts());
     }
 
     @Override
@@ -45,7 +47,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccount(int accountID) {
-        throw new UnsupportedOperationException();
+    public Account getAccount(String accountID) {
+        return accountDao.findAccountById(accountID);
+    }
+
+    @Override
+    public List<Transaction> getTransactionsForAccount(String accountID) {
+        if (accountDao.findAccountById(accountID) == null) {
+            return null;
+        }
+
+        return transactionService.getTransactionsForAccount(accountID);
     }
 }

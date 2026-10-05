@@ -48,4 +48,19 @@ public class AccountDaoImpl implements AccountDao {
 
         return accounts;
     }
+
+    @Override
+    public Account findAccountById(String accountId) {
+        return null;
+    }
+
+    @Override
+    public List<Account> getAllAccounts() {
+        return List.of();
+    }
+
+    @Override
+    public void updateAccounts() {
+
+    }
 }

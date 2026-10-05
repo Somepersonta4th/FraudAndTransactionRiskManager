@@ -8,7 +8,9 @@ import java.util.List;
 public interface TransactionDao {
     public ArrayList<Transaction> getTransactions();
 
-    Transaction findTransactionById(int transactionId);
+    void updateTransactions();
 
-    List<Transaction> findTransactionsByAccountId(int accountId);
+    Transaction findTransactionById(String transactionId);
+
+    List<Transaction> findTransactionsByAccountId(String accountId);
 }

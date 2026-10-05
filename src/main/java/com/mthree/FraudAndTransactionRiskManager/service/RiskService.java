@@ -1,14 +1,14 @@
 package com.mthree.FraudAndTransactionRiskManager.service;
 
-import com.mthree.FraudAndTransactionRiskManager.dto.Risk;
+import com.mthree.FraudAndTransactionRiskManager.dto.RiskRule;
 
 import java.util.List;
 
 //unfinished
 public interface RiskService {
 
-    public List<Risk> getRisks();
+    public List<RiskRule> getRisks();
 
-    public Risk getRisk(int riskID);
+    public RiskRule getRisk(int riskID);
 
 }
