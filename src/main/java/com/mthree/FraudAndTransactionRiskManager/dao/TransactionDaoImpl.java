@@ -4,6 +4,7 @@ import com.mthree.FraudAndTransactionRiskManager.DataSource;
 
 import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 import com.mysql.cj.jdbc.MysqlDataSource;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 
 
-
+@Repository
 public class TransactionDaoImpl implements TransactionDao{
     MysqlDataSource ds;
 

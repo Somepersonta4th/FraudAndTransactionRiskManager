@@ -143,4 +143,40 @@ public class Transaction {
     public void setPrimaryCategory(String primaryCategory) {
         this.primaryCategory = primaryCategory;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id='" + id + '\'' +
+                ", accountId='" + accountId + '\'' +
+                ", amount=" + amount +
+                ", currencyCode='" + currencyCode + '\'' +
+                ", description='" + description + '\'' +
+                ", primaryCategory='" + primaryCategory + '\'' +
+                ", detailedCategory='" + detailedCategory + '\'' +
+                ", channel='" + channel + '\'' +
+                ", dateTransaction=" + dateTransaction +
+                ", dateAuthorised=" + dateAuthorised +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", pending=" + pending +
+                '}';
+    }
+
+    public String toStringRaw() {
+        return id + " " +
+                accountId + " " +
+                amount + " " +
+                currencyCode + " " +
+                description + " " +
+                primaryCategory + " " +
+                detailedCategory + " " +
+                channel + " " +
+                dateTransaction + " " +
+                dateAuthorised + " " +
+                city + " " +
+                country + " " +
+                pending;
+    }
+
 }
