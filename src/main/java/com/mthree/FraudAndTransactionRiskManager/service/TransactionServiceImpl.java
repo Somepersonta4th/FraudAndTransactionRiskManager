@@ -37,7 +37,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction getTransaction(String transactionID) {
-        return transactionDao.getTransaction(transactionID);
+        return transactionDao.findCaseById(transactionID);
     }
 
     /*
