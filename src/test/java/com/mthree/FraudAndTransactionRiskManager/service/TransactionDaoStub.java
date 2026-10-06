@@ -37,7 +37,13 @@ public class TransactionDaoStub implements TransactionDao {
     }
 
     @Override
-    public Transaction findCaseById(String transactionID) {
+    public Transaction findTransactionById(String transactionId) {
         return transactions.get(0);
     }
+
+    @Override
+    public List<Transaction> findTransactionsByAccountId(String accountId) {
+        return List.of();
+    }
+
 }

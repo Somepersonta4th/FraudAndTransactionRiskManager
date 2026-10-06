@@ -28,7 +28,17 @@ public class AccountDaoStub implements AccountDao {
     }
 
     @Override
+    public Account findAccountById(String accountId) {
+        return null;
+    }
+
+    @Override
     public List<Account> getAccounts() {
         return accounts;
+    }
+
+    @Override
+    public void updateAccounts() {
+
     }
 }
