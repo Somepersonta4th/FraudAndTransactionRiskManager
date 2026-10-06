@@ -55,12 +55,15 @@ public class CaseDaoImpl implements CaseDao{
     }
 
     @Override
-    public Optional<Case> findOpenCaseByAccountId(int accountId) {
-        Case c = findCaseById(accountId);
-        if (c.getStatus().equals("CLOSED_SAFE") || c.getStatus().equals("CLOSED_FRAUD")){
-            return Optional.empty();
+    public List<Case> findOpenCaseByAccountId(int accountId) {
+        ArrayList<Case> cList = (ArrayList<Case>) jdbc.query("SELECT * FROM cases WHERE account_id = " + accountId, new CaseMapper());
+        ArrayList<Case> returnList = new ArrayList<>();
+        for (Case c : cList){
+            if(!(c.getStatus().equals("CLOSED_SAFE") || c.getStatus().equals("CLOSED_FRAUD"))){
+                returnList.add(c);
+            }
         }
-        return Optional.of(c);
+        return returnList;
     }
 
     @Override

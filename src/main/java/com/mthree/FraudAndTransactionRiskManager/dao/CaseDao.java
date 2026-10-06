@@ -2,6 +2,7 @@ package com.mthree.FraudAndTransactionRiskManager.dao;
 
 import com.mthree.FraudAndTransactionRiskManager.dto.Case;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CaseDao {
@@ -11,7 +12,7 @@ public interface CaseDao {
     Case findCaseById(int caseId);
 
     /** The account's case that is still open, under investigation or escalated, if any. */
-    Optional<Case> findOpenCaseByAccountId(int accountId);
+    List<Case> findOpenCaseByAccountId(int accountId);
 
     void updateCaseScore(int caseId, int score);
 }
