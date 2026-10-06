@@ -21,7 +21,7 @@ public class CaseServiceImpl implements CaseService {
         if (caseDao.findCaseById(caseID) == null) {
             return null;
         }
-        caseDao.updateCaseScore(caseID, score, priority);
+        caseDao.updateCaseScore(caseID, score);
         return caseDao.findCaseById(caseID);
     }
 }

@@ -13,5 +13,5 @@ public interface CaseDao {
     /** The account's case that is still open, under investigation or escalated, if any. */
     Optional<Case> findOpenCaseByAccountId(int accountId);
 
-    void updateCaseScore(int caseId, int score, String priority);
+    void updateCaseScore(int caseId, int score);
 }

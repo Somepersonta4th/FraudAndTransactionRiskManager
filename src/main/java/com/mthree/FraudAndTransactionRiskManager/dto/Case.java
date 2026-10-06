@@ -1,6 +1,7 @@
 package com.mthree.FraudAndTransactionRiskManager.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +19,15 @@ public class Case {
     private String accountId;
     private String description;
 
+
+    List<Transaction> transactions;
+
     private String status;
-    private String priority;
+
     private int score;
+
+
+
     private LocalDateTime openedAt;
     private LocalDateTime closedAt;
 
@@ -36,18 +43,27 @@ public class Case {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
+
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public String getPriority() { return priority; }
-    public void setPriority(String priority) { this.priority = priority; }
 
     public int getScore() { return score; }
     public void setScore(int score) { this.score = score; }
 
     public LocalDateTime getOpenedAt() { return openedAt; }
+    public String getOpenedAtString(){
+        return DateTimeFormatter.ISO_LOCAL_DATE.format(openedAt) + " " + DateTimeFormatter.ISO_LOCAL_TIME.format(openedAt);
+    }
     public void setOpenedAt(LocalDateTime openedAt) { this.openedAt = openedAt; }
+    public void setOpenedAt(String dateTransaction) {
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.openedAt = LocalDateTime.parse(dateTransaction, myFormatObj);
+    }
 
+    public String getClosedAtString(){
+        return DateTimeFormatter.ISO_LOCAL_DATE.format(closedAt) + " " + DateTimeFormatter.ISO_LOCAL_TIME.format(closedAt);
+    }
     public LocalDateTime getClosedAt() { return closedAt; }
     public void setClosedAt(LocalDateTime closedAt) { this.closedAt = closedAt; }
 
@@ -58,4 +74,26 @@ public class Case {
     public void setFlaggedTransactions(List<Transaction> flaggedTransactions) {
         this.flaggedTransactions = flaggedTransactions;
     }
+    public void setClosedAt(String dateTransaction) {
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.closedAt = LocalDateTime.parse(dateTransaction, myFormatObj);
+    }
+
+    public void setTransactions(List<Transaction> t){
+        transactions = t;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public List<String> getTransactionIds(){
+        ArrayList<String> list = new ArrayList<>();
+        for (Transaction t : transactions){
+            list.add(t.getId());
+        }
+        return list;
+    }
+
+
 }

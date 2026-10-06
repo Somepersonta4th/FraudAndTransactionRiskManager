@@ -30,4 +30,30 @@ CREATE TABLE Transactions(
 	CONSTRAINT FK_account_id
 		FOREIGN KEY (account_id)
 		REFERENCES Accounts(id)
-)
+);
+
+CREATE TABLE Cases(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    account_id varChar(40),
+    status varchar(30),
+    score INT,
+    description VARCHAR(100),
+    open_date DATETIME,
+    close_date DATETIME,
+    CONSTRAINT FK_account_id1
+		FOREIGN KEY (account_id)
+        REFERENCES Accounts(id)
+);
+
+
+
+CREATE TABLE case_transaction(
+	case_id INT,
+    transaction_id varchar(40),
+    CONSTRAINT FK_case_id
+		FOREIGN KEY (case_id)
+        REFERENCES Cases(id),
+	CONSTRAINT FK_transaction_id
+		FOREIGN KEY (transaction_id)
+        REFERENCES Transactions(id)
+);
