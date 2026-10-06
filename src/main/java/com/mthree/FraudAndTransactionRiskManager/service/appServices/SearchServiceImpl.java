@@ -1,6 +1,5 @@
-package com.mthree.FraudAndTransactionRiskManager.service;
+package com.mthree.FraudAndTransactionRiskManager.service.appServices;
 
-import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.springframework.stereotype.Service;
 

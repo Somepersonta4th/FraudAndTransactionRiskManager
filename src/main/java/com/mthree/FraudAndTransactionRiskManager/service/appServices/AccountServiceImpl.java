@@ -1,13 +1,11 @@
-package com.mthree.FraudAndTransactionRiskManager.service;
+package com.mthree.FraudAndTransactionRiskManager.service.appServices;
 
 import com.mthree.FraudAndTransactionRiskManager.dao.AccountDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Account;
-import com.mthree.FraudAndTransactionRiskManager.dto.RiskFlag;
 import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

@@ -1,8 +1,7 @@
-package com.mthree.FraudAndTransactionRiskManager.service;
+package com.mthree.FraudAndTransactionRiskManager.service.appServices;
 
 //unfinished
 import com.mthree.FraudAndTransactionRiskManager.dto.Account;
-import com.mthree.FraudAndTransactionRiskManager.dto.RiskFlag;
 import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 
 import java.util.List;

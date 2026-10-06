@@ -1,4 +1,4 @@
-package com.mthree.FraudAndTransactionRiskManager.service;
+package com.mthree.FraudAndTransactionRiskManager.service.appServices;
 
 import com.mthree.FraudAndTransactionRiskManager.dao.TransactionDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.RiskFlag;

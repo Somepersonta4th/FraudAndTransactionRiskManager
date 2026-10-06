@@ -1,11 +1,12 @@
 package com.mthree.FraudAndTransactionRiskManager.service;
 
-import com.mthree.FraudAndTransactionRiskManager.dao.TransactionDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
+import com.mthree.FraudAndTransactionRiskManager.service.appServices.SearchServiceImpl;
+import com.mthree.FraudAndTransactionRiskManager.service.appServices.TransactionService;
+import com.mthree.FraudAndTransactionRiskManager.service.appServices.TransactionServiceImpl;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

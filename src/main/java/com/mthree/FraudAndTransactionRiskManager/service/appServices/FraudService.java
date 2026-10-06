@@ -1,4 +1,4 @@
-package com.mthree.FraudAndTransactionRiskManager.service;
+package com.mthree.FraudAndTransactionRiskManager.service.appServices;
 
 //unfinished
 import com.mthree.FraudAndTransactionRiskManager.dto.Auditor;

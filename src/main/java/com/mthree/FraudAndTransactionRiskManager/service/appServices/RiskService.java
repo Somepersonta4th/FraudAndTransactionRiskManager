@@ -1,16 +1,14 @@
-package com.mthree.FraudAndTransactionRiskManager.service;
+package com.mthree.FraudAndTransactionRiskManager.service.appServices;
 
-import com.mthree.FraudAndTransactionRiskManager.dao.RiskFlagDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.RiskFlag;
 import com.mthree.FraudAndTransactionRiskManager.dto.RiskRule;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 //unfinished
 public interface RiskService {
 
-    public List<RiskRule> getRisks();
+    public List<RiskRule> getRiskRules();
 
     public RiskRule getRisk(int riskID);
 
@@ -18,4 +16,5 @@ public interface RiskService {
 
     public List<RiskFlag> getRiskFlagForAccount(String accountID);
 
+    public RiskRule getRiskRule(String ruleCode);
 }
