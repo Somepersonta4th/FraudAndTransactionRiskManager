@@ -22,18 +22,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     AccountService accountService;
 
     @Autowired
-    RiskService riskService;
-
-    @Autowired
     CaseService caseService;
 
     @Autowired
     SearchService searchService;
 
-    public ApplicationServiceImpl(TransactionService transactionService, AccountService accountService, RiskService riskService, CaseService caseService, SearchService searchService) {
+    public ApplicationServiceImpl(TransactionService transactionService, AccountService accountService, CaseService caseService, SearchService searchService) {
         this.transactionService = transactionService;
         this.accountService = accountService;
-        this.riskService = riskService;
         this.caseService = caseService;
         this.searchService = searchService;
     }
@@ -46,20 +42,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Transaction getTransaction(String transactionID) {
         return transactionService.getTransaction(transactionID);
-    }
-
-    @Override
-    public TransactionWrapper getTransactionInfo(String transactionID) {
-        TransactionWrapper wrapper = new TransactionWrapper();
-
-        wrapper.setTransaction(getTransaction(transactionID));
-        if (wrapper.getTransaction() == null) {
-            //return with null contents
-            return wrapper;
-        }
-
-        wrapper.setRiskFlags(getTransactionFlags(transactionID));
-        return wrapper;
     }
 
     /*
@@ -98,6 +80,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return transactionService.getTransactionsForAccount(accountID);
     }
 
+    /*
     @Override
     public List<RiskRule> getRiskRules() {
         return riskService.getRiskRules();
@@ -115,6 +98,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return riskService.getRiskFlagForTransaction(transactionID);
     }
+    */
 
     @Override
     public Case getCase(int caseID) {

@@ -37,6 +37,7 @@ public class Controller {
         return applicationService.getTransaction(transactionID);
     }
 
+    /*
     // retrieve transaction risk flags with transaction id
     @GetMapping("/transactions/{transactionID}/flags")
     public List<RiskFlag> getTransactionFlags(@PathVariable String transactionID) {
@@ -51,6 +52,7 @@ public class Controller {
         return applicationService.getTransactionInfo(transactionID);
         
     }
+    */
 
     // retrieve transactions with search
     @GetMapping("/transactions/search")
@@ -92,7 +94,7 @@ public class Controller {
 
 
 
-
+    /*
     // retrieve all risk rules
     @GetMapping("/risk-rules/all")
     public List<RiskRule> getRiskRules() {
@@ -101,7 +103,6 @@ public class Controller {
     }
 
     // retrieve risk rules by code
-    /*
     @GetMapping("/risk-rules/{ruleCode}")
     public RiskRule getRiskRule(@PathVariable String ruleCode) {
         auditService.writeToAudit("getRiskRule:" + ruleCode);

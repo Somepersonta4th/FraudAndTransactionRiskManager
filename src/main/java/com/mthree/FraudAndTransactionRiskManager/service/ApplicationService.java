@@ -10,8 +10,6 @@ public interface ApplicationService {
 
     public Transaction getTransaction(String transactionID);
 
-    public TransactionWrapper getTransactionInfo(String transactionID);
-
     public List<Transaction> searchTransactions(String searchString);
 
     public List<Account> getAccounts();
@@ -22,11 +20,13 @@ public interface ApplicationService {
 
     public List<Transaction> getTransactionsForAccount(String accountID);
 
+    /*
     public List<RiskRule> getRiskRules();
 
     public RiskRule getRiskRule(String ruleCode);
 
     public List<RiskFlag> getTransactionFlags(String transactionID);
+     */
 
     public Case getCase(int caseID);
 
