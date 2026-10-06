@@ -1,6 +1,8 @@
 package com.mthree.FraudAndTransactionRiskManager.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 //unfinished
 public class Case {
@@ -13,7 +15,8 @@ public class Case {
     public static final String CLOSED_FRAUD = "CLOSED_FRAUD";
 
     private int caseId;
-    private int accountId;
+    private String accountId;
+    private String description;
 
     private String status;
     private String priority;
@@ -21,11 +24,17 @@ public class Case {
     private LocalDateTime openedAt;
     private LocalDateTime closedAt;
 
+    private List<Transaction> flaggedTransactions = new ArrayList<>();
+
+
     public int getCaseId() { return caseId; }
     public void setCaseId(int caseId) { this.caseId = caseId; }
 
-    public int getAccountId() { return accountId; }
-    public void setAccountId(int accountId) { this.accountId = accountId; }
+    public String getAccountId() { return accountId; }
+    public void setAccountId(String accountId) { this.accountId = accountId; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
@@ -41,4 +50,12 @@ public class Case {
 
     public LocalDateTime getClosedAt() { return closedAt; }
     public void setClosedAt(LocalDateTime closedAt) { this.closedAt = closedAt; }
+
+    public List<Transaction> getFlaggedTransactions() {
+        return flaggedTransactions;
+    }
+
+    public void setFlaggedTransactions(List<Transaction> flaggedTransactions) {
+        this.flaggedTransactions = flaggedTransactions;
+    }
 }

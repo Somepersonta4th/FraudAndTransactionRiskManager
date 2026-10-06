@@ -6,7 +6,11 @@ import com.mthree.FraudAndTransactionRiskManager.service.appServices.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -120,5 +124,286 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Case setCaseScore(int caseID, int score, String priority) {
         return caseService.setCaseScore(caseID,score,priority);
+    }
+
+    //FRAUD DETECTION
+
+    // Rule codes: the name of each fraud check, shown at the start of each reason
+    public static final String LARGE_AMOUNT = "LARGE_AMOUNT";
+    public static final String PASS_THROUGH = "PASS_THROUGH";
+    public static final String NEW_MERCHANT = "NEW_MERCHANT";
+    public static final String FOREIGN_CURRENCY = "FOREIGN_CURRENCY";
+    public static final String DAILY_VELOCITY = "DAILY_VELOCITY";
+    public static final String BALANCE_DRAIN = "BALANCE_DRAIN";
+    public static final String HIGH_RISK_MERCHANT_CODE = "HIGH_RISK_MERCHANT_CODE";
+
+    // Score Settings
+    // Transactions needed before an account is stored
+    private static final int MIN_HISTORY = 15;
+    // transactions needed to know what is normal
+    private static final BigDecimal MINIMUM_DEPOSIT = new BigDecimal("500");      // PASS_THROUGH: smallest deposit checked
+    private static final int VELOCITY_MINIMUM_PAYMENTS = 10;                       // DAILY_VELOCITY: payments in one day
+    private static final BigDecimal BALANCE_DRAIN_SHARE = new BigDecimal("0.8");  // BALANCE_DRAIN: share of balance spent
+
+    // HIGH_RISK_MERCHANT_CODE: merchant category codes linked to potentially dodgy accounts
+    private static final Map<String, String> HIGH_RISK_MERCHANT_CODES = Map.of(
+            "7995", "gambling and betting",
+            "4829", "money transfer",
+            "6051", "money orders, foreign currency and crypto");
+
+
+    public List<Transaction> flagAllTransactions() {
+
+        List<Transaction> allFlagged = new ArrayList<>();
+
+        for (Account account : accountService.getAccounts()) {
+            allFlagged.addAll(flagTransactionsForAccount(account.getId()));
+        }
+
+        return allFlagged;
+    }
+
+    public List<Transaction> flagTransactionsForAccount(String accountID) {
+
+        Account account = accountService.getAccount(accountID);
+
+        if (account == null) {
+            return null;
+        }
+
+        String currency = account.getCurrencyCode();
+        BigDecimal availableBalance = account.getAvailable();
+
+        // Oldest first; on the same day, money in comes before money out.
+        // Transactions missing an amount or date cannot be checked, so they are skipped.
+        List<Transaction> sorted = new ArrayList<>(
+                transactionService.getTransactionsForAccount(accountID).stream()
+                        .filter(t -> t.getAmount() != null && t.getDateTransaction() != null)
+                        .toList()
+        );
+
+        sorted.sort(
+                Comparator.comparing(Transaction::getDateTransaction)
+                        .thenComparing(t -> isInflow(t) ? 0 : 1)
+        );
+
+        List<Transaction> flagged = new ArrayList<>();
+
+        if (sorted.size() <= MIN_HISTORY) {
+            return flagged;
+        }
+
+        LocalDate latestDate = sorted.get(sorted.size() - 1).getDateTransaction();
+
+        // The first MIN_HISTORY transactions build the picture of normal behaviour.
+        // Every later transaction is checked against everything that happened before it.
+        for (int i = MIN_HISTORY; i < sorted.size(); i++) {
+
+            Transaction tx = sorted.get(i);
+
+            List<Transaction> before = sorted.subList(0, i);
+
+            List<String> reasons = new ArrayList<>();
+
+            addReason(reasons, LARGE_AMOUNT,
+                    largeAmount(tx, before, currency));
+
+            addReason(reasons, PASS_THROUGH,
+                    passThrough(tx, before, currency));
+
+            addReason(reasons, NEW_MERCHANT,
+                    newMerchant(tx, before, currency));
+
+            addReason(reasons, FOREIGN_CURRENCY,
+                    foreignCurrency(tx, currency));
+
+            addReason(reasons, DAILY_VELOCITY,
+                    dailyVelocity(tx, before));
+
+            addReason(reasons, BALANCE_DRAIN,
+                    balanceDrain(tx, currency, availableBalance, latestDate));
+
+            addReason(reasons, HIGH_RISK_MERCHANT_CODE,
+                    highRiskMerchantCode(tx));
+
+            // If at least one fraud rule was triggered,
+            // add the actual Transaction to the flagged list.
+            if (!reasons.isEmpty()) {
+                flagged.add(tx);
+            }
+        }
+
+        return flagged;
+    }
+
+    // Rules: each returns an explanation if it fires, or null if not
+
+    // A payment more than 3x the largest payment in the 30 days before it.
+    private String largeAmount(Transaction tx, List<Transaction> before, String currency) {
+        // To only check payments out in the accounts own currency
+        if (!isOutflow(tx) || !isAccountCurrency(tx, currency)) return null;
+
+        LocalDate from = tx.getDateTransaction().minusDays(30);
+        Optional<BigDecimal> largest = before.stream()
+                .filter(t -> isOutflow(t) && isAccountCurrency(t, currency))
+                .filter(t -> t.getDateTransaction().isBefore(tx.getDateTransaction())
+                        && !t.getDateTransaction().isBefore(from))
+                .map(Transaction::getAmount)
+                .max(BigDecimal::compareTo);
+
+        // BigDecimal cannot be compared with < or >
+        if (largest.isEmpty() || tx.getAmount().compareTo(largest.get().multiply(BigDecimal.valueOf(3))) <= 0) return null;
+        return String.format("This was flagged as the payment of %s is %sx larger than this account's largest "
+                        + "payment in the previous 90 days (%s). Unusually large payments can mean the account "
+                        + "has been taken over or the customer is being scammed.",
+                money(tx.getAmount(), tx.getCurrencyCode()),
+                tx.getAmount().divide(largest.get(), 1, RoundingMode.HALF_UP),
+                money(largest.get(), tx.getCurrencyCode()));
+    }
+
+    // Checks Money is being paid in then at least 80% leaves the account within 2 days. */
+    private String passThrough(Transaction tx, List<Transaction> before, String currency) {
+        if (!isOutflow(tx) || !isAccountCurrency(tx, currency)) return null;
+
+        // Runs the loop backwards from most recent transaction
+        // Breaks after transactions older than 2 days
+        for (int i = before.size() - 1; i >= 0; i--) {
+            Transaction deposit = before.get(i);
+            if (deposit.getDateTransaction().isBefore(tx.getDateTransaction().minusDays(2))) break;
+            if (!isInflow(deposit) || !isAccountCurrency(deposit, currency)
+                    || deposit.getAmount().abs().compareTo(MINIMUM_DEPOSIT) < 0) continue;
+
+            // Once a deposit is found it adds up every payment out since then and divides by the deposit
+            // If the share is at least 80% within the last 2 days
+            BigDecimal paidOut = tx.getAmount();
+            for (int j = i + 1; j < before.size(); j++) {
+                Transaction later = before.get(j);
+                if (isOutflow(later) && isAccountCurrency(later, currency)) paidOut = paidOut.add(later.getAmount());
+            }
+            BigDecimal share = paidOut.divide(deposit.getAmount().abs(), 4, RoundingMode.HALF_UP);
+            if (share.compareTo(new BigDecimal("0.8")) < 0) return null;
+            return String.format("This was flagged as %d%% of a %s deposit received on %s left the account "
+                            + "within 2 days. Money passing straight through an account is a common sign of a "
+                            + "money mule account being used to move stolen funds.",
+                    Math.min(100, share.multiply(BigDecimal.valueOf(100)).intValue()),
+                    money(deposit.getAmount().abs(), deposit.getCurrencyCode()), deposit.getDateTransaction());
+        }
+        return null;
+    }
+
+    // First payment to someone, and bigger than the account's usual (median).
+    private String newMerchant(Transaction tx, List<Transaction> before, String currency) {
+        if (!isOutflow(tx) || !isAccountCurrency(tx, currency)) return null;
+        String key = merchantKey(tx);
+        if (before.stream().anyMatch(t -> merchantKey(t).equals(key))) return null;
+        // Anymatch returns true as soon as it finds one earlier payment to the same 'merchant'
+
+        // This calculates the median
+        // Which is used to flag if new payments are irregularly higher than normal
+        List<BigDecimal> amounts = before.stream()
+                .filter(t -> isOutflow(t) && isAccountCurrency(t, currency))
+                .filter(t -> t.getDateTransaction().isBefore(tx.getDateTransaction()))
+                .map(Transaction::getAmount).sorted().toList();
+        if (amounts.isEmpty()) return null;
+
+        int mid = amounts.size() / 2;
+        BigDecimal median = amounts.size() % 2 == 1 ? amounts.get(mid)
+                : amounts.get(mid - 1).add(amounts.get(mid)).divide(BigDecimal.valueOf(2), 2, RoundingMode.HALF_UP);
+        if (tx.getAmount().compareTo(median) <= 0) return null;
+        return String.format("This was flagged as it is the first payment to \"%s\" and, at %s, it is larger "
+                        + "than this account's usual payment of %s. Large payments to new payees are a common "
+                        + "pattern in scams and unauthorised payments.",
+                tx.getDescription(), money(tx.getAmount(), tx.getCurrencyCode()), money(median, tx.getCurrencyCode()));
+    }
+
+    // Any transaction in a currency other than the account's own.
+    private String foreignCurrency(Transaction tx, String currency) {
+        if (currency == null || tx.getCurrencyCode() == null || currency.equals(tx.getCurrencyCode())) return null;
+        return String.format("This was flagged as the transaction of %s is in %s, while this account uses %s. "
+                        + "Unexpected foreign transactions can mean card details are being used abroad.",
+                money(tx.getAmount().abs(), tx.getCurrencyCode()), tx.getCurrencyCode(), currency);
+    }
+
+    // 10 or more payments out in a single day.
+    private String dailyVelocity(Transaction tx, List<Transaction> before) {
+        if (!isOutflow(tx)) return null;
+
+        // Checks the amount of transactions made in one day
+        long today = before.stream()
+                .filter(t -> isOutflow(t) && t.getDateTransaction().equals(tx.getDateTransaction()))
+                .count() + 1; // include this payment
+
+        if (today < VELOCITY_MINIMUM_PAYMENTS) return null;
+        return String.format("This was flagged as it was payment number %d out of the account on %s. A burst "
+                        + "of payments in one day can mean stolen card details are being tested or the account "
+                        + "is being emptied.",
+                today, tx.getDateTransaction());
+    }
+
+    // A payment that used at least 80% of the money available before it was made.
+    private String balanceDrain(Transaction tx, String currency, BigDecimal availableBalance, LocalDate latestDate) {
+        if (availableBalance == null || !isOutflow(tx) || !isAccountCurrency(tx, currency)) return null;
+        if (!tx.getDateTransaction().equals(latestDate)) return null;
+
+        BigDecimal balanceBefore = availableBalance.add(tx.getAmount());
+        if (balanceBefore.signum() <= 0) return null;
+
+        BigDecimal share = tx.getAmount().divide(balanceBefore, 4, RoundingMode.HALF_UP);
+        if (share.compareTo(BALANCE_DRAIN_SHARE) < 0) return null;
+        return String.format("This was flagged as the payment of %s used %d%% of the money available in the "
+                        + "account. Emptying an account quickly is typical after an account has been taken over.",
+                money(tx.getAmount(), tx.getCurrencyCode()),
+                Math.min(100, share.multiply(BigDecimal.valueOf(100)).intValue()));
+    }
+
+    // A payment to a merchant category commonly linked to fraud or money laundering.
+    private String highRiskMerchantCode(Transaction tx) {
+        String code = tx.getMerchantCategoryCode();
+        if (!isOutflow(tx) || code == null || !HIGH_RISK_MERCHANT_CODES.containsKey(code)) return null;
+        return String.format("This was flagged as the payment of %s went to merchant category %s (%s). This "
+                        + "type of merchant is commonly linked to fraud and money laundering.",
+                money(tx.getAmount(), tx.getCurrencyCode()), code, HIGH_RISK_MERCHANT_CODES.get(code));
+    }
+
+    // Helpers
+
+    // Adds "RULE_CODE: explanation" to the list
+    private static void addReason(List<String> reasons, String ruleCode, String explanation) {
+        if (explanation != null) {
+            reasons.add(ruleCode + ": " + explanation);
+        }
+    }
+
+    private static boolean isOutflow(Transaction tx) {
+        return tx.getAmount().signum() > 0;
+    }
+
+    private static boolean isInflow(Transaction tx) {
+        return tx.getAmount().signum() < 0;
+    }
+
+    // True if the transaction is in the account's currency.
+    private static boolean isAccountCurrency(Transaction tx, String currency) {
+        return currency == null || currency.equals(tx.getCurrencyCode());
+    }
+
+    // Who was paid: Plaid's merchant ID or Description
+    private static String merchantKey(Transaction tx) {
+        if (tx.getMerchantEntityId() != null) {
+            return tx.getMerchantEntityId();
+        }
+        return tx.getDescription() == null ? "" : tx.getDescription().trim().toUpperCase(Locale.ROOT);
+    }
+
+    // Formats an amount with its currency symbol, e.g. £950.00, $1,300.00
+    private static String money(BigDecimal amount, String currency) {
+        String number = String.format(Locale.UK, "%,.2f", amount.setScale(2, RoundingMode.HALF_UP));
+        if (currency == null) return number;
+        return switch (currency) {
+            case "GBP" -> "\u00A3" + number;   // £
+            case "USD" -> "$" + number;
+            case "EUR" -> "\u20AC" + number;   // €
+            default -> number + " " + currency;
+        };
     }
 }
