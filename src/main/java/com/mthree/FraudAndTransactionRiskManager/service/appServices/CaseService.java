@@ -8,15 +8,8 @@ import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 
 import java.util.List;
 
-public interface FraudService {
+public interface CaseService {
+    Case getCase(int caseID);
 
-    public List<Case> getCases();
-
-    public List<Auditor> getAuditors();
-
-    public List<CaseNote> getCaseNotes(Case aCase);
-
-    public List<Transaction> getCaseTransactions(Case aCase);
-
-
+    Case setCaseScore(int caseID, int score, String priority);
 }
