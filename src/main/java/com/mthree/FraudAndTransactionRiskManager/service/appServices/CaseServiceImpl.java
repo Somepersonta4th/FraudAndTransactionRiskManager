@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CaseServiceImpl implements CaseService {
 
-    @Autowired
+    //@Autowired
     CaseDao caseDao;
 
     @Override

@@ -13,10 +13,10 @@ import java.util.List;
 @Repository
 public class RiskServiceImpl implements RiskService {
 
-    @Autowired
+    //@Autowired
     RiskFlagDao riskFlagDao;
 
-    @Autowired
+    //@Autowired
     RiskRuleDao riskRuleDao;
 
     @Override
