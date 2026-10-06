@@ -15,13 +15,5 @@ public interface TransactionService {
 
     public Transaction getTransaction(String transactionID);
 
-    public TransactionWrapper getTransactionInfo(String transactionID);
-
-    List<RiskFlag> getRiskFlagsForTransaction(String transactionID);
-
-    public List<Transaction> searchTransactions(String searchString);
-
-    public List<Transaction> searchTransactions(String searchString, List<Transaction> transactions);
-
     public List<Transaction> getTransactionsForAccount(String accountID);
 }

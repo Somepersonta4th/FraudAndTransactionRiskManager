@@ -13,16 +13,8 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     AccountDao accountDao;
 
-    @Autowired
-    TransactionService transactionService;
-
-    @Autowired
-    SearchService searchService;
-
-    public AccountServiceImpl(AccountDao accountDao, TransactionService transactionService, SearchService searchService) {
+    public AccountServiceImpl(AccountDao accountDao) {
         this.accountDao = accountDao;
-        this.transactionService = transactionService;
-        this.searchService = searchService;
     }
 
     @Override
@@ -36,26 +28,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> searchAccounts(String searchString) {
-        return searchAccounts(searchString,getAccounts());
-    }
-
-    @Override
-    public List<Account> searchAccounts(String searchString, List<Account> accounts) {
-        return (List<Account>) searchService.searchObjectsBy(searchString,accounts);
-    }
-
-    @Override
     public Account getAccount(String accountID) {
         return accountDao.findAccountById(accountID);
-    }
-
-    @Override
-    public List<Transaction> getTransactionsForAccount(String accountID) {
-        if (accountDao.findAccountById(accountID) == null) {
-            return null;
-        }
-
-        return transactionService.getTransactionsForAccount(accountID);
     }
 }

@@ -12,12 +12,5 @@ public interface AccountService {
 
     public List<Account> getAccounts();
 
-    public List<Account> searchAccounts(String searchString);
-
-    public List<Account> searchAccounts(String searchString, List<Account> accounts);
-
     public Account getAccount(String accountID);
-
-    public List<Transaction> getTransactionsForAccount(String accountID);
-
 }
