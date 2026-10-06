@@ -5,6 +5,10 @@ import com.mthree.FraudAndTransactionRiskManager.dto.Case;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 @Service
 public class CaseServiceImpl implements CaseService {
 
@@ -23,5 +27,23 @@ public class CaseServiceImpl implements CaseService {
         }
         caseDao.updateCaseScore(caseID, score);
         return caseDao.findCaseById(caseID);
+    }
+
+    @Override
+    public Case addCaseForAccount(String accountID) {
+        Case newCase = new Case();
+        newCase.setAccountId(accountID);
+        newCase.setStatus(Case.OPEN);
+        newCase.setScore(0);
+        newCase.setDescription("");
+        LocalDateTime localTime = LocalDateTime.now();
+        newCase.setOpenedAt(DateTimeFormatter.ISO_LOCAL_DATE.format(localTime) + " " + DateTimeFormatter.ISO_LOCAL_TIME.format(localTime));
+
+        return caseDao.createCase(newCase);
+    }
+
+    @Override
+    public List<Case> getCasesForAccount(String accountID) {
+        throw new UnsupportedOperationException();
     }
 }

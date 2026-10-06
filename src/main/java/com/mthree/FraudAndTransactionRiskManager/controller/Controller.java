@@ -133,6 +133,22 @@ public class Controller {
         return applicationService.setCaseScore(caseID,score,priority);
     }
 
+    // creates new case from accountID
+    @PostMapping("accounts/{accountID}/cases")
+    public Case addCaseForAccount(@PathVariable String accountID) {
+        auditService.writeToAudit("addCaseForAccount:" + accountID);
+        return applicationService.addCaseForAccount(accountID);
+    }
+
+    // gets case from accountID
+    @PostMapping("accounts/{accountID}/cases")
+    public List<Case> getCaseForAccount(@PathVariable String accountID) {
+        auditService.writeToAudit("getCaseForAccount:" + accountID);
+        return applicationService.getCasesForAccount(accountID);
+    }
+
+
+
 
 
 

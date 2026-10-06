@@ -12,4 +12,8 @@ public interface CaseService {
     Case getCase(int caseID);
 
     Case setCaseScore(int caseID, int score, String priority);
+
+    Case addCaseForAccount(String accountID);
+
+    List<Case> getCasesForAccount(String accountID);
 }
