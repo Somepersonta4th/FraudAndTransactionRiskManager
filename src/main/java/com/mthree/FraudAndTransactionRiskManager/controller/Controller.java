@@ -3,10 +3,7 @@ package com.mthree.FraudAndTransactionRiskManager.controller;
 import com.mthree.FraudAndTransactionRiskManager.dto.*;
 import com.mthree.FraudAndTransactionRiskManager.dto.wrappers.TransactionWrapper;
 import com.mthree.FraudAndTransactionRiskManager.service.ApplicationService;
-import com.mthree.FraudAndTransactionRiskManager.service.appServices.AccountService;
 import com.mthree.FraudAndTransactionRiskManager.service.AuditService;
-import com.mthree.FraudAndTransactionRiskManager.service.appServices.RiskService;
-import com.mthree.FraudAndTransactionRiskManager.service.appServices.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -104,12 +101,13 @@ public class Controller {
     }
 
     // retrieve risk rules by code
+    /*
     @GetMapping("/risk-rules/{ruleCode}")
     public RiskRule getRiskRule(@PathVariable String ruleCode) {
         auditService.writeToAudit("getRiskRule:" + ruleCode);
         return applicationService.getRiskRule(ruleCode);
     }
-
+    */
 
 
     // retrieve all cases
