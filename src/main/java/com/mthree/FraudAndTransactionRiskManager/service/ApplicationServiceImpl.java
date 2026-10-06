@@ -138,7 +138,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public static final String HIGH_RISK_MERCHANT_CODE = "HIGH_RISK_MERCHANT_CODE";
 
     // Score Settings
-    // Transactions needed before an account is stored
+    // Transactions needed before an account's transactions are checked
     private static final int MIN_HISTORY = 15;
     // transactions needed to know what is normal
     private static final BigDecimal MINIMUM_DEPOSIT = new BigDecimal("500");      // PASS_THROUGH: smallest deposit checked
@@ -163,7 +163,30 @@ public class ApplicationServiceImpl implements ApplicationService {
         return allFlagged;
     }
 
+    // Returns only the flagged transactions (AMBER or RED) for an account
     public List<Transaction> flagTransactionsForAccount(String accountID) {
+
+        List<Transaction> coloured = colourTransactionsForAccount(accountID);
+
+        if (coloured == null) {
+            return null;
+        }
+
+        List<Transaction> flagged = new ArrayList<>();
+
+        for (Transaction tx : coloured) {
+            if (tx.getFlagColour() != FlagColour.GREEN) {
+                flagged.add(tx);
+            }
+        }
+
+        return flagged;
+    }
+
+    // Returns EVERY transaction for an account, oldest first, each with its flag colour:
+    // GREEN = no rules fired, AMBER = one rule fired, RED = two or more rules fired.
+    // This is the list to show when the user searches an account ID.
+    public List<Transaction> colourTransactionsForAccount(String accountID) {
 
         Account account = accountService.getAccount(accountID);
 
@@ -187,15 +210,18 @@ public class ApplicationServiceImpl implements ApplicationService {
                         .thenComparing(t -> isInflow(t) ? 0 : 1)
         );
 
-        List<Transaction> flagged = new ArrayList<>();
+        // Every transaction starts GREEN. The first MIN_HISTORY transactions only build the
+        // picture of normal behaviour, so they stay GREEN.
+        for (Transaction tx : sorted) {
+            tx.setFlagColour(FlagColour.GREEN);
+        }
 
         if (sorted.size() <= MIN_HISTORY) {
-            return flagged;
+            return sorted;
         }
 
         LocalDate latestDate = sorted.get(sorted.size() - 1).getDateTransaction();
 
-        // The first MIN_HISTORY transactions build the picture of normal behaviour.
         // Every later transaction is checked against everything that happened before it.
         for (int i = MIN_HISTORY; i < sorted.size(); i++) {
 
@@ -226,14 +252,11 @@ public class ApplicationServiceImpl implements ApplicationService {
             addReason(reasons, HIGH_RISK_MERCHANT_CODE,
                     highRiskMerchantCode(tx));
 
-            // If at least one fraud rule was triggered,
-            // add the actual Transaction to the flagged list.
-            if (!reasons.isEmpty()) {
-                flagged.add(tx);
-            }
+            // The number of rules that fired decides the colour: 0 GREEN, 1 AMBER, 2+ RED
+            tx.setFlagColour(FlagColour.fromRuleCount(reasons.size()));
         }
 
-        return flagged;
+        return sorted;
     }
 
     // Rules: each returns an explanation if it fires, or null if not
@@ -254,7 +277,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         // BigDecimal cannot be compared with < or >
         if (largest.isEmpty() || tx.getAmount().compareTo(largest.get().multiply(BigDecimal.valueOf(3))) <= 0) return null;
         return String.format("This was flagged as the payment of %s is %sx larger than this account's largest "
-                        + "payment in the previous 90 days (%s). Unusually large payments can mean the account "
+                        + "payment in the previous 30 days (%s). Unusually large payments can mean the account "
                         + "has been taken over or the customer is being scammed.",
                 money(tx.getAmount(), tx.getCurrencyCode()),
                 tx.getAmount().divide(largest.get(), 1, RoundingMode.HALF_UP),

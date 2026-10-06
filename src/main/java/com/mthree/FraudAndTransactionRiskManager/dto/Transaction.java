@@ -27,6 +27,7 @@ public class Transaction {
     private String city;
     private String country;
     private Boolean pending;
+    private FlagColour flagColour = FlagColour.GREEN;
 
     public String getId() {
         return id;
@@ -160,6 +161,12 @@ public class Transaction {
         this.primaryCategory = primaryCategory;
     }
 
+    public FlagColour getFlagColour() { return flagColour; }
+
+    public void setFlagColour(FlagColour flagColour) {
+        this.flagColour = flagColour;
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
@@ -180,6 +187,9 @@ public class Transaction {
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
                 ", pending=" + pending +
+                ", flag colour=" + flagColour +
                 '}';
     }
+
+
 }
