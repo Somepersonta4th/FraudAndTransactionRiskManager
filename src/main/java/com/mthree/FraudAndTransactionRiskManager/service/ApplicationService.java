@@ -1,8 +1,6 @@
 package com.mthree.FraudAndTransactionRiskManager.service;
 
-import com.mthree.FraudAndTransactionRiskManager.dto.Account;
-import com.mthree.FraudAndTransactionRiskManager.dto.RiskRule;
-import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
+import com.mthree.FraudAndTransactionRiskManager.dto.*;
 import com.mthree.FraudAndTransactionRiskManager.dto.wrappers.TransactionWrapper;
 
 import java.util.List;
@@ -27,4 +25,10 @@ public interface ApplicationService {
     public List<RiskRule> getRiskRules();
 
     public RiskRule getRiskRule(String ruleCode);
+
+    public List<RiskFlag> getTransactionFlags(String transactionID);
+
+    public Case getCase(int caseID);
+
+    public Case setCaseScore(int caseID, int score, String priority);
 }

@@ -1,17 +1,14 @@
 package com.mthree.FraudAndTransactionRiskManager.service;
 
-import com.mthree.FraudAndTransactionRiskManager.dto.Account;
-import com.mthree.FraudAndTransactionRiskManager.dto.RiskRule;
-import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
+import com.mthree.FraudAndTransactionRiskManager.dto.*;
 import com.mthree.FraudAndTransactionRiskManager.dto.wrappers.TransactionWrapper;
-import com.mthree.FraudAndTransactionRiskManager.service.appServices.AccountService;
-import com.mthree.FraudAndTransactionRiskManager.service.appServices.RiskService;
-import com.mthree.FraudAndTransactionRiskManager.service.appServices.SearchService;
-import com.mthree.FraudAndTransactionRiskManager.service.appServices.TransactionService;
+import com.mthree.FraudAndTransactionRiskManager.service.appServices.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ApplicationServiceImpl implements ApplicationService {
 
     @Autowired
@@ -22,6 +19,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Autowired
     RiskService riskService;
+
+    @Autowired
+    CaseService caseService;
 
     @Autowired
     SearchService searchService;
@@ -77,5 +77,23 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public RiskRule getRiskRule(String ruleCode) {
         return riskService.getRiskRule(ruleCode);
+    }
+
+    @Override
+    public List<RiskFlag> getTransactionFlags(String transactionID) {
+        if (transactionService.getTransaction(transactionID) == null) {
+            return null;
+        }
+        return riskService.getRiskFlagForTransaction(transactionID);
+    }
+
+    @Override
+    public Case getCase(int caseID) {
+        return caseService.getCase(caseID);
+    }
+
+    @Override
+    public Case setCaseScore(int caseID, int score, String priority) {
+        return caseService.setCaseScore(caseID,score,priority);
     }
 }

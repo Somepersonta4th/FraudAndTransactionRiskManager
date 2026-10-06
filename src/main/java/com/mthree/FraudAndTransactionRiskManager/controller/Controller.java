@@ -1,8 +1,6 @@
 package com.mthree.FraudAndTransactionRiskManager.controller;
 
-import com.mthree.FraudAndTransactionRiskManager.dto.Account;
-import com.mthree.FraudAndTransactionRiskManager.dto.RiskRule;
-import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
+import com.mthree.FraudAndTransactionRiskManager.dto.*;
 import com.mthree.FraudAndTransactionRiskManager.dto.wrappers.TransactionWrapper;
 import com.mthree.FraudAndTransactionRiskManager.service.ApplicationService;
 import com.mthree.FraudAndTransactionRiskManager.service.appServices.AccountService;
@@ -25,6 +23,9 @@ public class Controller {
     @Autowired
     AuditService auditService;
 
+
+
+
     // retrieve all transactions
     @GetMapping("/transactions/all")
     public List<Transaction> getAllTransaction() {
@@ -33,14 +34,21 @@ public class Controller {
     }
 
     // retrieve transaction with id
-    @GetMapping("/transactions/id/{accountID}")
+    @GetMapping("/transactions/{transactionID}")
     public Transaction getTransaction(@PathVariable String transactionID) {
         auditService.writeToAudit("getTransaction:" + transactionID);
         return applicationService.getTransaction(transactionID);
     }
 
+    // retrieve transaction risk flags with transaction id
+    @GetMapping("/transactions/{transactionID}/flags")
+    public List<RiskFlag> getTransactionFlags(@PathVariable String transactionID) {
+        auditService.writeToAudit("getTransactionFlags:" + transactionID);
+        return applicationService.getTransactionFlags(transactionID);
+    }
+
     // retrieve transaction and related data with id
-    @GetMapping("/transactions/info/{accountID}")
+    @GetMapping("/transactions/{transactionID}/info")
     public TransactionWrapper getTransactionInfo(@PathVariable String transactionID) {
         auditService.writeToAudit("getTransactionInfo:" + transactionID);
         return applicationService.getTransactionInfo(transactionID);
@@ -54,15 +62,18 @@ public class Controller {
         return applicationService.searchTransactions(searchString);
     }
 
+
+
+
     // retrieve all account
-    @GetMapping("/cases/all")
+    @GetMapping("/accounts/all")
     public List<Account> getAllTransactions() {
         auditService.writeToAudit("getAllTransactions");
         return applicationService.getAccounts();
     }
 
     // retrieve account with id
-    @GetMapping("/accounts/id/{accountID}")
+    @GetMapping("/accounts/{accountID}")
     public Account getAccount(@PathVariable String accountID) {
         auditService.writeToAudit("getAccount:" + accountID);
         return applicationService.getAccount(accountID);
@@ -76,11 +87,14 @@ public class Controller {
     }
 
     // retrieve transactions relating to account
-    @GetMapping("/accounts/transactions-for-id/{accountID}")
+    @GetMapping("/accounts/{accountID}/transactions")
     public List<Transaction> getAccountTransactions(@PathVariable String accountID) {
         auditService.writeToAudit("getAccountTransactions:" + accountID);
         return applicationService.getTransactionsForAccount(accountID);
     }
+
+
+
 
     // retrieve all risk rules
     @GetMapping("/risk-rules/all")
@@ -89,12 +103,38 @@ public class Controller {
         return applicationService.getRiskRules();
     }
 
-    // retrieve risk rules by ID
+    // retrieve risk rules by code
     @GetMapping("/risk-rules/{ruleCode}")
     public RiskRule getRiskRule(@PathVariable String ruleCode) {
         auditService.writeToAudit("getRiskRule:" + ruleCode);
         return applicationService.getRiskRule(ruleCode);
     }
+
+
+
+    // retrieve all cases
+    @GetMapping("/cases/all")
+    public List<Case> getAllCases() {
+        auditService.writeToAudit("getAllCases");
+        throw new UnsupportedOperationException();
+    }
+
+    // retrieve case by id
+    @GetMapping("/cases/{caseID}")
+    public Case getCase(@PathVariable int caseID) {
+        auditService.writeToAudit("getCase:" + caseID);
+        return applicationService.getCase(caseID);
+    }
+
+    // updates case score
+    @PutMapping("/cases/{caseID}/score")
+    public Case setCaseScore(@PathVariable int caseID, int score, String priority) {
+        auditService.writeToAudit("setCaseScore:" + caseID + ":" + score + ":" + priority);
+        return applicationService.setCaseScore(caseID,score,priority);
+    }
+
+
+
 
     @GetMapping("/{testString}")
     public String test(@PathVariable String testString) {
