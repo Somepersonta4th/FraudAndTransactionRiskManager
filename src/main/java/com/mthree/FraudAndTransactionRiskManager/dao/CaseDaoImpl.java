@@ -25,7 +25,7 @@ public class CaseDaoImpl implements CaseDao{
     @Override
     public Case createCase(Case fraudCase) {
         jdbc.update("INSERT INTO case(account_id, status, score, description, open_date, close_date) VALUES ('" + fraudCase.getAccountId() + "', '" + fraudCase.getStatus() + "', '" + fraudCase.getScore() + "', '" + fraudCase.getDescription() + "', '" + fraudCase.getOpenedAtString() + "', '" + fraudCase.getClosedAtString() + "')");
-        Case ob = jdbc.query("SELECT * FROM cases WHERE id = MAX(id)", new CaseMapper()).get(0);
+        Case ob = jdbc.query("SELECT * FROM cases WHERE id = (SELECT MAX(id) FROM cases);", new CaseMapper()).get(0);
         ArrayList<String> tList = (ArrayList<String>)fraudCase.getTransactionIds();
 
         for (String id : tList) {
