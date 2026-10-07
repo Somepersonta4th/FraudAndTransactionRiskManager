@@ -29,7 +29,10 @@ public class AccountDaoJDBC implements AccountDao{
 
     @Override
     public Account findAccountById(String accountId) {
-        return jdbc.query("SELECT * FROM Accounts WHERE id = " + accountId + ";", new AccountMapper()).get(0);
+
+        //return jdbc.query("SELECT * FROM accounts WHERE id = '" + accountId + "';", new AccountMapper()).get(0);
+        System.out.println("Heeeey");
+        return jdbc.query("SELECT * FROM accounts WHERE id = '" + accountId + "';", new AccountMapper()).get(0);
     }
 
 

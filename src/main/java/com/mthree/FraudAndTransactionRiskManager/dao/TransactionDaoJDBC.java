@@ -34,11 +34,11 @@ public class TransactionDaoJDBC implements TransactionDao{
 
     @Override
     public Transaction findTransactionById(String transactionId) {
-        return jdbc.query("SELECT * FROM Transactions WHERE id = " + transactionId, new TransactionMapper()).get(0);
+        return jdbc.query("SELECT * FROM Transactions WHERE id = '" + transactionId + "';", new TransactionMapper()).get(0);
     }
 
     @Override
     public List<Transaction> findTransactionsByAccountId(String accountId) {
-        return jdbc.query("SELECT * FROM Transactions WHERE account_id = " + accountId, new TransactionMapper());
+        return jdbc.query("SELECT * FROM Transactions WHERE account_id = '" + accountId + "';", new TransactionMapper());
     }
 }
