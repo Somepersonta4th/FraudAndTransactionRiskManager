@@ -110,6 +110,19 @@ public class ApplicationServiceImpl implements ApplicationService {
         return caseService.setCaseScore(caseID,score,priority);
     }
 
+    @Override
+    public Case addCaseForAccount(String accountID) {
+        if (accountService.getAccount(accountID) == null) {
+            return null;
+        }
+        return caseService.addCaseForAccount(accountID);
+    }
+
+    @Override
+    public List<Case> getCasesForAccount(String accountID) {
+        return caseService.getCasesForAccount(accountID);
+    }
+
     //FRAUD DETECTION
 
     // Rule codes: the name of each fraud check, shown at the start of each reason

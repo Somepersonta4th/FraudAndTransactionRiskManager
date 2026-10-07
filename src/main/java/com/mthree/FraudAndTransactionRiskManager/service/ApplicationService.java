@@ -31,4 +31,8 @@ public interface ApplicationService {
     public Case getCase(int caseID);
 
     public Case setCaseScore(int caseID, int score, String priority);
+
+    public Case addCaseForAccount(String accountID);
+
+    public List<Case> getCasesForAccount(String accountID);
 }
