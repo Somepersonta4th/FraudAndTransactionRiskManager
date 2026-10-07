@@ -8,6 +8,8 @@ import java.util.List;
 public interface ApplicationService {
     public List<Transaction> getTransactions();
 
+    public void importFromPaid();
+
     public Transaction getTransaction(String transactionID);
 
     //public TransactionWrapper getTransactionInfo(String transactionID);

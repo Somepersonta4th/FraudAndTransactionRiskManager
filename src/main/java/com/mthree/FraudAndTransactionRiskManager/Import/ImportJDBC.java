@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,6 +18,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+
+@Repository
 public class ImportJDBC implements Import{
     private final JdbcTemplate jdbc;
 
@@ -34,6 +37,7 @@ public class ImportJDBC implements Import{
     public void importData() throws ParseException, SQLException {
 
         String jsonString = getBody();
+
 
         JSONObject jObject = (JSONObject) new JSONParser().parse(jsonString);
 

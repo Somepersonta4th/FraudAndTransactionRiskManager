@@ -32,6 +32,7 @@ public class CaseDaoImpl implements CaseDao {
     // Saves the case, links each of its transactions, and returns the saved case with its new id.
     @Override
     public Case createCase(Case fraudCase) {
+        System.out.println("Heeeey");
         final String sql = "INSERT INTO cases(account_id, status, score, description, open_date, close_date) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();

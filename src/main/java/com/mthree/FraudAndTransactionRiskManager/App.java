@@ -29,10 +29,6 @@ public class App {
 
     public static void main(String[] args) throws ParseException, SQLException {
 
-        Import imp = new PlaidImport();
-
-        imp.importData();
-
         SpringApplication.run(App.class, args);
 
 

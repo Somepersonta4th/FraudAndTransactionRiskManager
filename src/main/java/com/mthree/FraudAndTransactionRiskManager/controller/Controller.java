@@ -21,8 +21,6 @@ public class Controller {
     AuditService auditService;
 
 
-
-
     // retrieve all transactions
     @GetMapping("/transactions/all")
     public List<Transaction> getAllTransaction() {

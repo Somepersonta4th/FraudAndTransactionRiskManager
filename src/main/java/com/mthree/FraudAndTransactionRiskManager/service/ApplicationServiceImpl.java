@@ -1,13 +1,18 @@
 package com.mthree.FraudAndTransactionRiskManager.service;
 
+import com.mthree.FraudAndTransactionRiskManager.Import.Import;
+
+import com.mthree.FraudAndTransactionRiskManager.Import.ImportJDBC;
 import com.mthree.FraudAndTransactionRiskManager.dto.*;
 import com.mthree.FraudAndTransactionRiskManager.dto.wrappers.TransactionWrapper;
 import com.mthree.FraudAndTransactionRiskManager.service.appServices.*;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -32,17 +37,27 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Autowired
     SearchService searchService;
 
-    public ApplicationServiceImpl(TransactionService transactionService, AccountService accountService, CaseService caseService, SearchService searchService) {
+    @Autowired
+    Import importer;
+
+    public ApplicationServiceImpl(TransactionService transactionService, AccountService accountService, CaseService caseService, SearchService searchService, Import imp) throws SQLException, ParseException {
         this.transactionService = transactionService;
         this.accountService = accountService;
         //this.riskService = riskService;
         this.caseService = caseService;
         this.searchService = searchService;
+        importer = imp;
+        imp.importData();
     }
 
     @Override
     public List<Transaction> getTransactions() {
         return transactionService.getTransactions();
+    }
+
+    @Override
+    public void importFromPaid() {
+
     }
 
     @Override
