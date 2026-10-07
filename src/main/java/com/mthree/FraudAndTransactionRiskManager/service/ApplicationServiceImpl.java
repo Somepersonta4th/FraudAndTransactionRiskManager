@@ -129,8 +129,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Case setCaseScore(int caseID, int score, String priority) {
-        return caseService.setCaseScore(caseID,score,priority);
+    public Case setCaseScore(int caseID, int score) {
+        return caseService.setCaseScore(caseID,score);
     }
 
     @Override
@@ -144,6 +144,28 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<Case> getCasesForAccount(String accountID) {
         return caseService.getCasesForAccount(accountID);
+    }
+
+    @Override
+    public Case addTransactionToCase(int caseID, String transactionID) {
+        Transaction transaction = transactionService.getTransaction(transactionID);
+        if (transaction == null) {
+            Case errorCase = new Case();
+            errorCase.setDescription("transaction not found");
+            return errorCase;
+        }
+        Case aCase = caseService.getCase(caseID);
+        if (aCase == null) {
+            Case errorCase = new Case();
+            errorCase.setDescription("case not found");
+            return errorCase;
+        }
+        return caseService.addTransactionToCase(aCase,transaction);
+    }
+
+    @Override
+    public Case setCaseDescription(int caseID, String description) {
+        return caseService.setCaseDescription(caseID,description);
     }
 
     // Retrieve all cases

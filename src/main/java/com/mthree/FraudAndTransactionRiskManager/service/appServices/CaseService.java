@@ -11,7 +11,7 @@ import java.util.List;
 public interface CaseService {
     Case getCase(int caseID);
 
-    Case setCaseScore(int caseID, int score, String priority);
+    Case setCaseScore(int caseID, int score);
 
     Case addCaseForAccount(String accountID);
 
@@ -28,4 +28,8 @@ public interface CaseService {
 
     // Deletes a case and its links
     void deleteCase(int caseID);
+
+    Case addTransactionToCase(Case aCase, Transaction transaction);
+
+    Case setCaseDescription(int caseID, String description);
 }

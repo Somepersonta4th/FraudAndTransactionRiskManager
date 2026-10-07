@@ -127,9 +127,23 @@ public class Controller {
 
     // updates case score
     @PutMapping("/cases/{caseID}/score")
-    public Case setCaseScore(@PathVariable int caseID, int score, String priority) {
-        auditService.writeToAudit("setCaseScore:" + caseID + ":" + score + ":" + priority);
-        return applicationService.setCaseScore(caseID,score,priority);
+    public Case setCaseScore(@PathVariable int caseID, int score) {
+        auditService.writeToAudit("setCaseScore:" + caseID + ":" + score);
+        return applicationService.setCaseScore(caseID,score);
+    }
+
+    // updates case description
+    @PutMapping("/cases/{caseID}/description")
+    public Case setCaseDescription(@PathVariable int caseID, String description) {
+        auditService.writeToAudit("setCasDescription:" + caseID + ":" + description);
+        return applicationService.setCaseDescription(caseID,description);
+    }
+
+    // add transaction to case
+    @PutMapping("/cases/{caseID}/add-transaction/{transactionID}")
+    public Case addTransactionToCase(@PathVariable int caseID,@PathVariable String transactionID) {
+        auditService.writeToAudit("addTransactionToCase:" + caseID + ":" + transactionID);
+        return applicationService.addTransactionToCase(caseID,transactionID);
     }
 
     // creates new case from accountID

@@ -24,7 +24,7 @@ public class DataSource {
         ds.setUseSSL(false);
 
         ds.setUser("root");
-        ds.setPassword("Password");
+        ds.setPassword(System.getenv("DB_PASS"));
         //Will need to be changed for other computers!!!
         //ds.setPassword(System.getenv("Password"));
         ////////////////////////////////////////////

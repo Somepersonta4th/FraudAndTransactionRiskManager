@@ -2,6 +2,7 @@ package com.mthree.FraudAndTransactionRiskManager.service.appServices;
 
 import com.mthree.FraudAndTransactionRiskManager.dao.CaseDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Case;
+import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Case setCaseScore(int caseID, int score, String priority) {
+    public Case setCaseScore(int caseID, int score) {
         if (caseDao.findCaseById(caseID) == null) {
             return null;
         }
@@ -79,6 +80,24 @@ public class CaseServiceImpl implements CaseService {
     public void deleteCase(int caseID) {
         caseDao.deleteTransactionsFromCase(caseID);
         caseDao.deleteCase(caseID);
+    }
+
+    @Override
+    public Case addTransactionToCase(Case aCase, Transaction transaction) {
+        List<Transaction> transactions = aCase.getTransactions();
+        transactions.add(transaction);
+        aCase.setTransactions(transactions);
+        return aCase;
+    }
+
+    @Override
+    public Case setCaseDescription(int caseID, String description) {
+        Case aCase = caseDao.findCaseById(caseID);
+        if (aCase == null) {
+            return null;
+        }
+        aCase.setDescription(description);
+        return null;
     }
 
 }

@@ -32,7 +32,7 @@ public interface ApplicationService {
 
     public Case getCase(int caseID);
 
-    public Case setCaseScore(int caseID, int score, String priority);
+    public Case setCaseScore(int caseID, int score);
 
     // Fraud detection
     List<Transaction> colourTransactionsForAccount(String accountID);
@@ -48,4 +48,8 @@ public interface ApplicationService {
     public Case addCaseForAccount(String accountID);
 
     public List<Case> getCasesForAccount(String accountID);
+
+    Case addTransactionToCase(int caseID, String transactionID);
+
+    Case setCaseDescription(int caseID, String description);
 }
