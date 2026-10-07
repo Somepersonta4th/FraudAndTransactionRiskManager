@@ -74,8 +74,9 @@ public class Case {
     }
     public void setClosedAt(String dateTransaction) {
         if (dateTransaction == null) {
-            this.closedAt = null;   // an open case has no close date
-            return;
+            dateTransaction = "1970-01-01 00:00:00";
+            //this.closedAt = null;   // an open case has no close date
+            //return;
         }
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.closedAt = LocalDateTime.parse(dateTransaction, myFormatObj);

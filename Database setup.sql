@@ -30,9 +30,10 @@ CREATE TABLE Transactions(
     merchant_name varchar(100),
     merchant_entity_id varchar(50),
     merchant_category_code varchar(4),
-	CONSTRAINT FK_account_id
-		FOREIGN KEY (account_id)
-		REFERENCES Accounts(id)
+
+Constraint FK_account
+	FOREIGN KEY (account_id)
+	REFERENCES Accounts(id)
 );
 
 CREATE TABLE Cases(
@@ -42,10 +43,11 @@ CREATE TABLE Cases(
     score INT,
     description VARCHAR(100),
     open_date DATETIME,
-    close_date DATETIME,
-    CONSTRAINT FK_account_id1
-		FOREIGN KEY (account_id)
-        REFERENCES Accounts(id)
+    close_date DATETIME NULL,
+
+Constraint FK_account1
+	FOREIGN KEY (account_id)
+	REFERENCES Accounts(id)
 );
 
 
@@ -53,10 +55,12 @@ CREATE TABLE Cases(
 CREATE TABLE case_transaction(
 	case_id INT,
     transaction_id varchar(40),
-    CONSTRAINT FK_case_id
-		FOREIGN KEY (case_id)
-        REFERENCES Cases(id),
-	CONSTRAINT FK_transaction_id
+
+	Constraint FK_case
+	FOREIGN KEY (case_id)
+	REFERENCES Cases(id),
+
+	constraint FK_transaction
 		FOREIGN KEY (transaction_id)
-        REFERENCES Transactions(id)
+		REFERENCES Transactions(id)
 );

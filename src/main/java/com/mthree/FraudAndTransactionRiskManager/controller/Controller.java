@@ -111,6 +111,7 @@ public class Controller {
     // retrieve all cases
     @GetMapping("/cases/all")
     public List<Case> getAllCases() {
+
         auditService.writeToAudit("getAllCases");
         return applicationService.getAllCases();
     }

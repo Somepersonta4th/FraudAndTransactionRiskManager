@@ -32,7 +32,7 @@ public class CaseDaoImpl implements CaseDao {
     // Saves the case, links each of its transactions, and returns the saved case with its new id.
     @Override
     public Case createCase(Case fraudCase) {
-        System.out.println("Heeeey");
+
         final String sql = "INSERT INTO cases(account_id, status, score, description, open_date, close_date) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
@@ -67,6 +67,7 @@ public class CaseDaoImpl implements CaseDao {
         }
         Case foundCase = found.get(0);
         loadTransactions(foundCase);
+        System.out.println(foundCase.getClosedAt());
         return foundCase;
     }
 
@@ -93,6 +94,7 @@ public class CaseDaoImpl implements CaseDao {
 
     @Override
     public List<Case> findAllCases() {
+
         List<Case> cases = jdbc.query("SELECT * FROM cases ORDER BY id", new CaseMapper());
         for (Case c : cases) {
             loadTransactions(c);

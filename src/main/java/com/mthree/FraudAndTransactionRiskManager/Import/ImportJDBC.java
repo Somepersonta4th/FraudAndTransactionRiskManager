@@ -36,6 +36,7 @@ public class ImportJDBC implements Import{
     @Override
     public void importData() throws ParseException, SQLException {
 
+
         String jsonString = getBody();
 
 
@@ -43,8 +44,8 @@ public class ImportJDBC implements Import{
 
         //String accounts = (String) jObject.get("accounts");
 
-        deleteAllTransactions();
-        deleteAllAccounts();
+        //deleteAllTransactions();
+        //deleteAllAccounts();
         accountSetter(jObject);
 
         transactionSetter(jObject);
@@ -61,7 +62,6 @@ public class ImportJDBC implements Import{
     }
 
     private void transactionSetter(JSONObject json){
-
 
 
         JSONArray transactions = (JSONArray) json.get("added");
@@ -118,11 +118,14 @@ public class ImportJDBC implements Import{
                     + "city, country, pending, merchant_name, merchant_entity_id, merchant_category_code) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            jdbc.update(sql,
-                    id, accountId, amount, currencyCode, description,
-                    primaryCategory, detailedCategory, channel, dateTransaction, dateAuthorised,
-                    city, country, pending, merchantName, merchantEntityId, merchantCategoryCode);
+            try {
+                jdbc.update(sql,
+                        id, accountId, amount, currencyCode, description,
+                        primaryCategory, detailedCategory, channel, dateTransaction, dateAuthorised,
+                        city, country, pending, merchantName, merchantEntityId, merchantCategoryCode);
+            } catch (Exception e){
 
+            }
 
 
         }
@@ -154,7 +157,12 @@ public class ImportJDBC implements Import{
 
 
             String sql = "INSERT INTO accounts(id, account_name, available, current, iso_currency_code, mask, account_type, account_subtype) VALUES('" + accountID + "', '" + name + "', '" + available + "', '" + current + "', '" + currencyCode + "', '" + mask + "', '" + type + "', '" + subType + "')";
-            jdbc.update(sql);
+
+            try{jdbc.update(sql);}
+            catch (Exception e) {
+                //This will ensure the program will just skip over any duplicated items
+
+            }
 
         }
     }

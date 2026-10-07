@@ -268,6 +268,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                     || Case.CLOSED_FRAUD.equals(updatedCase.getStatus());
 
             if (closing && existing.getClosedAt() == null) {
+
                 existing.setClosedAt(LocalDateTime.now());
             } else if (!closing) {
                 existing.setClosedAt((LocalDateTime) null); // reopened
