@@ -6,7 +6,9 @@ import com.mthree.FraudAndTransactionRiskManager.service.AuditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/FTRM")
@@ -25,6 +27,21 @@ public class Controller {
     public List<Transaction> getAllTransaction() {
         auditService.writeToAudit("getAllTransaction");
         return applicationService.getTransactions();
+    }
+
+    // retrieve transactions for past 7 days
+    @GetMapping("/transactions/week")
+    public Map<String,List<Transaction>> getTransactionForWeek() {
+        auditService.writeToAudit("getTransactionForWeek");
+        return applicationService.getTransactionForWeek();
+    }
+
+    // retrieve transactions for past 24 hours
+    // note - transaction time is not stored, assumes transactions occur at end of day
+    @GetMapping("/transactions/day")
+    public List<Transaction> getTransactionForDay() {
+        auditService.writeToAudit("getTransactionForDay");
+        return applicationService.getTransactionForDay();
     }
 
     // retrieve transaction with id

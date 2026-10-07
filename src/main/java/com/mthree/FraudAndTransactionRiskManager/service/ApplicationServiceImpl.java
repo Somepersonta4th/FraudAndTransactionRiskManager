@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -189,6 +190,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<Case> getAllCases() {
         return caseService.getCases();
+    }
+
+    @Override
+    public Map<String,List<Transaction>> getTransactionForWeek() {
+        return transactionService.getTransactionForWeek();
+    }
+
+    @Override
+    public List<Transaction> getTransactionForDay() {
+        return transactionService.getTransactionForDay();
     }
 
     // Retrieve all cases

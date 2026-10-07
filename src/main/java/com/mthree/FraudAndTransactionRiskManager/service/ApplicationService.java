@@ -2,7 +2,9 @@ package com.mthree.FraudAndTransactionRiskManager.service;
 
 import com.mthree.FraudAndTransactionRiskManager.dto.*;
 
+import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Map;
 
 public interface ApplicationService {
     public List<Transaction> getTransactions();
@@ -57,4 +59,8 @@ public interface ApplicationService {
     Case setCaseStatus(int caseID, String status);
 
     List<Case> getAllCases();
+
+    Map<String,List<Transaction>> getTransactionForWeek();
+
+    List<Transaction> getTransactionForDay();
 }
