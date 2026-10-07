@@ -20,7 +20,7 @@ public class Case {
     private String description;
 
 
-    List<Transaction> transactions;
+    List<Transaction> transactions = new ArrayList<>();
 
     private String status;
 
@@ -92,7 +92,9 @@ public class Case {
 
     public List<String> getTransactionIds(){
         ArrayList<String> list = new ArrayList<>();
+       // System.out.println("Hey: ");
         for (Transaction t : transactions){
+            //System.out.println("Hey: " + t.getId());
             list.add(t.getId());
         }
         return list;

@@ -36,6 +36,9 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public Case addCaseForAccount(String accountID) {
+
+
+
         Case newCase = new Case();
         newCase.setAccountId(accountID);
         newCase.setStatus(Case.OPEN);
@@ -49,7 +52,8 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public List<Case> getCasesForAccount(String accountID) {
-        throw new UnsupportedOperationException();
+        return caseDao.findOpenCaseByAccountId(accountID);
+        //throw new UnsupportedOperationException();
     }
 
     @Override
@@ -98,23 +102,30 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public Case setCaseStatus(int caseID, String status) {
+
+
         Case aCase = caseDao.findCaseById(caseID);
         if (aCase == null) {
             return null;
         }
 
+
         // do not update if case is closed
         CaseStatus currentStatus = CaseStatus.getStatusFromString(status);
+
+
+
         switch (currentStatus) {
             // do not update case if currently closed
             case CLOSED_FRAUD:
                 aCase.setStatus("Status not changed: case is closed and marked as fraud");
+
                 return aCase;
             case CLOSED_SAFE:
                 aCase.setStatus("Status not changed: case is closed and marked as safe");
+
                 return aCase;
         }
-
 
         CaseStatus newStatus = CaseStatus.getStatusFromString(status);
 

@@ -125,21 +125,24 @@ public class Controller {
 
     // updates case score
     @PutMapping("/cases/{caseID}/score")
-    public Case setCaseScore(@PathVariable int caseID, int score) {
-        auditService.writeToAudit("setCaseScore:" + caseID + ":" + score);
-        return applicationService.setCaseScore(caseID,score);
+    public Case setCaseScore(@PathVariable int caseID, @RequestBody String score) {
+        int scoreInt = Integer.parseInt(score);
+        auditService.writeToAudit("setCaseScore:" + caseID + ":" + scoreInt);
+        return applicationService.setCaseScore(caseID,scoreInt);
     }
 
     // updates case description
     @PutMapping("/cases/{caseID}/description")
-    public Case setCaseDescription(@PathVariable int caseID, String description) {
+    public Case setCaseDescription(@PathVariable int caseID, @RequestBody String description) {
         auditService.writeToAudit("setCasDescription:" + caseID + ":" + description);
+
         return applicationService.setCaseDescription(caseID,description);
     }
 
-    // updates case description
+    // updates case status
+    //Note: REQUEST BODY MUST BE SPELLED CORRECTLY, or it will return with error code 500
     @PutMapping("/cases/{caseID}/status")
-    public Case setCaseStatus(@PathVariable int caseID, String status) {
+    public Case setCaseStatus(@PathVariable int caseID, @RequestBody String status) {
         auditService.writeToAudit("setCaseStatus:" + caseID + ":" + status);
         return applicationService.setCaseStatus(caseID,status);
     }
@@ -155,6 +158,7 @@ public class Controller {
     @PostMapping("accounts/{accountID}/cases")
     public Case addCaseForAccount(@PathVariable String accountID) {
         auditService.writeToAudit("addCaseForAccount:" + accountID);
+
         return applicationService.addCaseForAccount(accountID);
     }
 

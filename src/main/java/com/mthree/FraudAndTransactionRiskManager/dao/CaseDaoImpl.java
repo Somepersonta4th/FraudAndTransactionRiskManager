@@ -37,6 +37,8 @@ public class CaseDaoImpl implements CaseDao {
                 + "VALUES (?, ?, ?, ?, ?, ?)";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
+
+
         jdbc.update(connection -> {
             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id"});
             statement.setString(1, fraudCase.getAccountId());
@@ -48,12 +50,15 @@ public class CaseDaoImpl implements CaseDao {
             return statement;
         }, keyHolder);
 
+
         // The id the database generated for the new case
         int newCaseId = Objects.requireNonNull(keyHolder.getKey()).intValue();
 
         for (String transactionId : fraudCase.getTransactionIds()) {
+
             addTransactionToCase(newCaseId, transactionId);
         }
+
 
         return findCaseById(newCaseId);
     }
@@ -67,7 +72,7 @@ public class CaseDaoImpl implements CaseDao {
         }
         Case foundCase = found.get(0);
         loadTransactions(foundCase);
-        System.out.println(foundCase.getClosedAt());
+
         return foundCase;
     }
 
