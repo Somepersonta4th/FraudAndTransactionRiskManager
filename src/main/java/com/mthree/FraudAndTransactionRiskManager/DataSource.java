@@ -24,9 +24,9 @@ public class DataSource {
         ds.setUseSSL(false);
 
         ds.setUser("root");
-        ds.setPassword("StrathallaN27");
+        ds.setPassword("Password");
         //Will need to be changed for other computers!!!
-        //ds.setPassword(System.getenv("StrathallaN27"));
+        //ds.setPassword(System.getenv("Password"));
         ////////////////////////////////////////////
         ds.setAllowPublicKeyRetrieval(true);
         return ds;
