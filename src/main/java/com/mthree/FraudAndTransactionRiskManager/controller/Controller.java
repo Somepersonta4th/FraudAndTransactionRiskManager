@@ -1,7 +1,6 @@
 package com.mthree.FraudAndTransactionRiskManager.controller;
 
 import com.mthree.FraudAndTransactionRiskManager.dto.*;
-import com.mthree.FraudAndTransactionRiskManager.dto.wrappers.TransactionWrapper;
 import com.mthree.FraudAndTransactionRiskManager.service.ApplicationService;
 import com.mthree.FraudAndTransactionRiskManager.service.AuditService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,9 +2,7 @@ package com.mthree.FraudAndTransactionRiskManager.service;
 
 import com.mthree.FraudAndTransactionRiskManager.Import.Import;
 
-import com.mthree.FraudAndTransactionRiskManager.Import.ImportJDBC;
 import com.mthree.FraudAndTransactionRiskManager.dto.*;
-import com.mthree.FraudAndTransactionRiskManager.dto.wrappers.TransactionWrapper;
 import com.mthree.FraudAndTransactionRiskManager.service.appServices.*;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;

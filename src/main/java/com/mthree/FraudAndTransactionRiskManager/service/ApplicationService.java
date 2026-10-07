@@ -1,7 +1,6 @@
 package com.mthree.FraudAndTransactionRiskManager.service;
 
 import com.mthree.FraudAndTransactionRiskManager.dto.*;
-import com.mthree.FraudAndTransactionRiskManager.dto.wrappers.TransactionWrapper;
 
 import java.util.List;
 
