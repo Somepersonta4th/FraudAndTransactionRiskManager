@@ -21,12 +21,10 @@ public class Controller {
     AuditService auditService;
 
 
-
-
     // retrieve all transactions
     @GetMapping("/transactions/all")
-    public List<Transaction> getAllTransaction() {
-        auditService.writeToAudit("getAllTransaction");
+    public List<Transaction> getAllTransactions() {
+        auditService.writeToAudit("getAllTransactions");
         return applicationService.getTransactions();
     }
 
@@ -37,6 +35,7 @@ public class Controller {
         return applicationService.getTransaction(transactionID);
     }
 
+    /*
     // retrieve transaction risk flags with transaction id
     @GetMapping("/transactions/{transactionID}/flags")
     public List<RiskFlag> getTransactionFlags(@PathVariable String transactionID) {
@@ -44,6 +43,9 @@ public class Controller {
         return applicationService.getTransactionFlags(transactionID);
     }
 
+     */
+
+    /*
     // retrieve transaction and related data with id
     @GetMapping("/transactions/{transactionID}/info")
     public TransactionWrapper getTransactionInfo(@PathVariable String transactionID) {
@@ -52,6 +54,8 @@ public class Controller {
         
     }
 
+     */
+
     // retrieve transactions with search
     @GetMapping("/transactions/search")
     public List<Transaction> searchTransactions(String searchString) {
@@ -59,12 +63,9 @@ public class Controller {
         return applicationService.searchTransactions(searchString);
     }
 
-
-
-
     // retrieve all account
     @GetMapping("/accounts/all")
-    public List<Account> getAllTransactions() {
+    public List<Account> getAllAccounts() {
         auditService.writeToAudit("getAllTransactions");
         return applicationService.getAccounts();
     }
@@ -93,12 +94,15 @@ public class Controller {
 
 
 
+    /*
     // retrieve all risk rules
     @GetMapping("/risk-rules/all")
     public List<RiskRule> getRiskRules() {
         auditService.writeToAudit("getRiskRules");
         return applicationService.getRiskRules();
     }
+
+     */
 
     // retrieve risk rules by code
     /*

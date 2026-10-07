@@ -10,7 +10,7 @@ public interface ApplicationService {
 
     public Transaction getTransaction(String transactionID);
 
-    public TransactionWrapper getTransactionInfo(String transactionID);
+    //public TransactionWrapper getTransactionInfo(String transactionID);
 
     public List<Transaction> searchTransactions(String searchString);
 
@@ -22,13 +22,24 @@ public interface ApplicationService {
 
     public List<Transaction> getTransactionsForAccount(String accountID);
 
-    public List<RiskRule> getRiskRules();
+    //public List<RiskRule> getRiskRules();
 
-    public RiskRule getRiskRule(String ruleCode);
+    //public RiskRule getRiskRule(String ruleCode);
 
-    public List<RiskFlag> getTransactionFlags(String transactionID);
+    //public List<RiskFlag> getTransactionFlags(String transactionID);
 
     public Case getCase(int caseID);
 
     public Case setCaseScore(int caseID, int score, String priority);
+
+    // Fraud detection
+    List<Transaction> colourTransactionsForAccount(String accountID);
+    List<Transaction> flagTransactionsForAccount(String accountID);
+    List<Transaction> flagAllTransactions();
+
+    // Cases
+    List<Case> getCases();
+    Case createCase(String accountID, List<String> transactionIDs, String description);
+    Case updateCase(int caseID, Case updatedCase);
+    void deleteCase(int caseID);
 }

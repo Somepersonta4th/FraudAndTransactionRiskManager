@@ -14,6 +14,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -22,9 +24,8 @@ import java.util.ArrayList;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 //unfinished
+
 public class App {
-
-
 
     public static void main(String[] args) throws ParseException, SQLException {
 
@@ -37,6 +38,8 @@ public class App {
 
 
     }
+
+
 
 
 

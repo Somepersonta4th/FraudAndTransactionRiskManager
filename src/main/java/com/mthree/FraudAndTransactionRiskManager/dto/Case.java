@@ -26,8 +26,6 @@ public class Case {
 
     private int score;
 
-
-
     private LocalDateTime openedAt;
     private LocalDateTime closedAt;
 
@@ -75,6 +73,10 @@ public class Case {
         this.flaggedTransactions = flaggedTransactions;
     }
     public void setClosedAt(String dateTransaction) {
+        if (dateTransaction == null) {
+            this.closedAt = null;   // an open case has no close date
+            return;
+        }
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.closedAt = LocalDateTime.parse(dateTransaction, myFormatObj);
     }
