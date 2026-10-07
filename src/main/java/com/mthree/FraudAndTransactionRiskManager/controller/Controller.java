@@ -113,7 +113,7 @@ public class Controller {
     @GetMapping("/cases/all")
     public List<Case> getAllCases() {
         auditService.writeToAudit("getAllCases");
-        throw new UnsupportedOperationException();
+        return applicationService.getAllCases();
     }
 
     // retrieve case by id
@@ -135,6 +135,13 @@ public class Controller {
     public Case setCaseDescription(@PathVariable int caseID, String description) {
         auditService.writeToAudit("setCasDescription:" + caseID + ":" + description);
         return applicationService.setCaseDescription(caseID,description);
+    }
+
+    // updates case description
+    @PutMapping("/cases/{caseID}/status")
+    public Case setCaseStatus(@PathVariable int caseID, String status) {
+        auditService.writeToAudit("setCaseStatus:" + caseID + ":" + status);
+        return applicationService.setCaseStatus(caseID,status);
     }
 
     // add transaction to case

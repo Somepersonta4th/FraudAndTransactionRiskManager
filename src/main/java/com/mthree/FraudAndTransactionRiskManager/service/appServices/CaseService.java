@@ -29,7 +29,9 @@ public interface CaseService {
     // Deletes a case and its links
     void deleteCase(int caseID);
 
-    Case addTransactionToCase(Case aCase, Transaction transaction);
+    Case addTransactionToCase(int caseID, String transactionID);
 
     Case setCaseDescription(int caseID, String description);
+
+    Case setCaseStatus(int caseID, String status);
 }

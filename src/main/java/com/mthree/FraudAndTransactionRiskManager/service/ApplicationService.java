@@ -54,4 +54,8 @@ public interface ApplicationService {
     Case addTransactionToCase(int caseID, String transactionID);
 
     Case setCaseDescription(int caseID, String description);
+
+    Case setCaseStatus(int caseID, String status);
+
+    List<Case> getAllCases();
 }

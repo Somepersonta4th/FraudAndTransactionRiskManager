@@ -175,12 +175,22 @@ public class ApplicationServiceImpl implements ApplicationService {
             errorCase.setDescription("case not found");
             return errorCase;
         }
-        return caseService.addTransactionToCase(aCase,transaction);
+        return caseService.addTransactionToCase(caseID,transactionID);
     }
 
     @Override
     public Case setCaseDescription(int caseID, String description) {
         return caseService.setCaseDescription(caseID,description);
+    }
+
+    @Override
+    public Case setCaseStatus(int caseID, String status) {
+        return caseService.setCaseStatus(caseID,status);
+    }
+
+    @Override
+    public List<Case> getAllCases() {
+        return caseService.getCases();
     }
 
     // Retrieve all cases

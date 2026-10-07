@@ -2,17 +2,14 @@ package com.mthree.FraudAndTransactionRiskManager.service.appServices;
 
 import com.mthree.FraudAndTransactionRiskManager.dao.CaseDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Case;
-import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
+import com.mthree.FraudAndTransactionRiskManager.dto.CaseStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Service
 public class CaseServiceImpl implements CaseService {
@@ -44,8 +41,8 @@ public class CaseServiceImpl implements CaseService {
         newCase.setStatus(Case.OPEN);
         newCase.setScore(0);
         newCase.setDescription("");
-        LocalDateTime localTime = LocalDateTime.now();
-        newCase.setOpenedAt(DateTimeFormatter.ISO_LOCAL_DATE.format(localTime) + " " + DateTimeFormatter.ISO_LOCAL_TIME.format(localTime));
+        LocalDateTime currentTime = LocalDateTime.now();
+        newCase.setOpenedAt(currentTime);
 
         return caseDao.createCase(newCase);
     }
@@ -83,11 +80,9 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Case addTransactionToCase(Case aCase, Transaction transaction) {
-        List<Transaction> transactions = aCase.getTransactions();
-        transactions.add(transaction);
-        aCase.setTransactions(transactions);
-        return aCase;
+    public Case addTransactionToCase(int caseID, String transactionID) {
+        caseDao.addTransactionToCase(caseID,transactionID);
+        return getCase(caseID);
     }
 
     @Override
@@ -97,7 +92,50 @@ public class CaseServiceImpl implements CaseService {
             return null;
         }
         aCase.setDescription(description);
-        return null;
+        caseDao.updateCase(aCase);
+        return aCase;
+    }
+
+    @Override
+    public Case setCaseStatus(int caseID, String status) {
+        Case aCase = caseDao.findCaseById(caseID);
+        if (aCase == null) {
+            return null;
+        }
+
+        // do not update if case is closed
+        CaseStatus currentStatus = CaseStatus.getStatusFromString(status);
+        switch (currentStatus) {
+            // do not update case if currently closed
+            case CLOSED_FRAUD:
+                aCase.setStatus("Status not changed: case is closed and marked as fraud");
+                return aCase;
+            case CLOSED_SAFE:
+                aCase.setStatus("Status not changed: case is closed and marked as safe");
+                return aCase;
+        }
+
+
+        CaseStatus newStatus = CaseStatus.getStatusFromString(status);
+
+        switch (newStatus) {
+            case OPEN,UNDER_INVESTIGATION,ESCALATED:
+                // update case
+                aCase.setStatus(status);
+                caseDao.updateCase(aCase);
+                return aCase;
+            case CLOSED_FRAUD,CLOSED_SAFE:
+                // close case and update
+                aCase.setStatus(status);
+                LocalDateTime currentTime = LocalDateTime.now();
+                aCase.setClosedAt(currentTime);
+                caseDao.updateCase(aCase);
+                return aCase;
+            default:
+                // do not update dao if invalid
+                aCase.setStatus("invalid status");
+                return aCase;
+        }
     }
 
 }
