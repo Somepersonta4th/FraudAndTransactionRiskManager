@@ -23,7 +23,11 @@ public class TransactionMapper implements RowMapper<Transaction> {
         temp.setDateAuthorised(rs.getString("date_authorised"));
         temp.setCity(rs.getString("city"));
         temp.setCountry(rs.getString("country"));
-        temp.setPending(rs.getString("pending").equals("true"));
+        temp.setPending(rs.getBoolean("pending"));
+
+        temp.setMerchantName(rs.getString("merchant_name"));
+        temp.setMerchantEntityId(rs.getString("merchant_entity_id"));
+        temp.setMerchantCategoryCode(rs.getString("merchant_category_code"));
 
         return temp;
     }
