@@ -16,4 +16,16 @@ public interface CaseService {
     Case addCaseForAccount(String accountID);
 
     List<Case> getCasesForAccount(String accountID);
+
+    // Saves a new case and links its transactions; returns the case with its new caseId
+    Case createCase(Case newCase);
+
+    // Returns every case
+    List<Case> getCases();
+
+    // Saves changes to an existing case (description, status, closedAt) returns the updated case
+    Case updateCase(Case updatedCase);
+
+    // Deletes a case and its links
+    void deleteCase(int caseID);
 }

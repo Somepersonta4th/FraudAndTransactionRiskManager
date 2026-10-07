@@ -4,6 +4,10 @@ import com.mthree.FraudAndTransactionRiskManager.dao.CaseDao;
 import com.mthree.FraudAndTransactionRiskManager.dto.Case;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +18,9 @@ public class CaseServiceImpl implements CaseService {
 
     @Autowired
     CaseDao caseDao;
+
+    @Autowired
+    TransactionService transactionService;
 
     @Override
     public Case getCase(int caseID) {
@@ -46,4 +53,32 @@ public class CaseServiceImpl implements CaseService {
     public List<Case> getCasesForAccount(String accountID) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    @Transactional
+    public Case createCase(Case newCase) {
+        return caseDao.createCase(newCase);
+    }
+
+    @Override
+    public List<Case> getCases() {
+        return caseDao.findAllCases();
+    }
+
+    @Override
+    public Case updateCase(Case updatedCase) {
+        if (caseDao.findCaseById(updatedCase.getCaseId()) == null) {
+            return null;
+        }
+        caseDao.updateCase(updatedCase);
+        return caseDao.findCaseById(updatedCase.getCaseId());
+    }
+
+    @Override
+    @Transactional
+    public void deleteCase(int caseID) {
+        caseDao.deleteTransactionsFromCase(caseID);
+        caseDao.deleteCase(caseID);
+    }
+
 }

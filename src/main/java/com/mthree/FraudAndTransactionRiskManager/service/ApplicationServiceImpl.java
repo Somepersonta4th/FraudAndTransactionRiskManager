@@ -21,6 +21,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Autowired
     AccountService accountService;
 
+    /*
+    @Autowired
+    RiskService riskService;
+     */
+
     @Autowired
     CaseService caseService;
 
@@ -30,6 +35,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationServiceImpl(TransactionService transactionService, AccountService accountService, CaseService caseService, SearchService searchService) {
         this.transactionService = transactionService;
         this.accountService = accountService;
+        //this.riskService = riskService;
         this.caseService = caseService;
         this.searchService = searchService;
     }
@@ -44,6 +50,23 @@ public class ApplicationServiceImpl implements ApplicationService {
         return transactionService.getTransaction(transactionID);
     }
 
+    /*
+    @Override
+    public TransactionWrapper getTransactionInfo(String transactionID) {
+        TransactionWrapper wrapper = new TransactionWrapper();
+
+        wrapper.setTransaction(getTransaction(transactionID));
+        if (wrapper.getTransaction() == null) {
+            //return with null contents
+            return wrapper;
+        }
+
+        wrapper.setRiskFlags(getTransactionFlags(transactionID));
+        return wrapper;
+    }
+
+
+     */
     /*
     search format:
     terms are space deliminated
@@ -121,6 +144,98 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<Case> getCasesForAccount(String accountID) {
         return caseService.getCasesForAccount(accountID);
+    }
+
+    // Retrieve all cases
+    @Override
+    public List<Case> getCases() {
+        return caseService.getCases();
+    }
+
+    // Groups the flagged transactions the user selected into one new case.
+    // Returns null if the account does not exist.
+    @Override
+    public Case createCase(String accountID, List<String> transactionIDs, String description) {
+
+        if (transactionIDs == null || transactionIDs.isEmpty()) {
+            throw new IllegalArgumentException("Select at least one flagged transaction to create a case");
+        }
+
+        // The account's flagged (AMBER or RED) transactions; null if the account does not exist
+        List<Transaction> flagged = flagTransactionsForAccount(accountID);
+        if (flagged == null) {
+            return null;
+        }
+
+        // Match each selected ID to a flagged transaction on this account.
+        // LinkedHashSet ignores any ID selected twice while keeping the selection order.
+        List<Transaction> selected = new ArrayList<>();
+        List<String> notFlagged = new ArrayList<>();
+
+        for (String id : new LinkedHashSet<>(transactionIDs)) {
+            Transaction match = flagged.stream()
+                    .filter(t -> t.getId().equals(id))
+                    .findFirst()
+                    .orElse(null);
+
+            if (match == null) {
+                notFlagged.add(id);
+            } else {
+                selected.add(match);
+            }
+        }
+
+        if (!notFlagged.isEmpty()) {
+            throw new IllegalArgumentException("These transactions are not flagged transactions on account "
+                    + accountID + ": " + notFlagged);
+        }
+
+        Case newCase = new Case();
+        newCase.setAccountId(accountID);
+        newCase.setDescription(description);
+        newCase.setStatus(Case.OPEN);
+        newCase.setOpenedAt(LocalDateTime.now());
+        newCase.setTransactions(selected);
+        // closedAt stays null until the case is closed
+
+        // CaseService saves the case and its transaction links, and returns it with its new caseId
+        return caseService.createCase(newCase);
+    }
+
+    // Updates a case's description and/or status.
+    // Moving to a closed status records closedAt. Returns null if the case does not exist.
+    @Override
+    public Case updateCase(int caseID, Case updatedCase) {
+
+        Case existing = caseService.getCase(caseID);
+        if (existing == null) {
+            return null;
+        }
+
+        if (updatedCase.getDescription() != null) {
+            existing.setDescription(updatedCase.getDescription());
+        }
+
+        if (updatedCase.getStatus() != null) {
+            existing.setStatus(updatedCase.getStatus());
+
+            boolean closing = Case.CLOSED_SAFE.equals(updatedCase.getStatus())
+                    || Case.CLOSED_FRAUD.equals(updatedCase.getStatus());
+
+            if (closing && existing.getClosedAt() == null) {
+                existing.setClosedAt(LocalDateTime.now());
+            } else if (!closing) {
+                existing.setClosedAt((LocalDateTime) null); // reopened
+            }
+        }
+
+        return caseService.updateCase(existing);
+    }
+
+    // Deletes a case and its transaction links
+    @Override
+    public void deleteCase(int caseID) {
+        caseService.deleteCase(caseID);
     }
 
     //FRAUD DETECTION

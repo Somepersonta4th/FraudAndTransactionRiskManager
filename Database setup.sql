@@ -27,6 +27,9 @@ CREATE TABLE Transactions(
     city varchar(50),
     country varchar(50),
     pending BOOLEAN,
+    merchant_name varchar(100),
+    merchant_entity_id varchar(50),
+    merchant_category_code varchar(4),
 	CONSTRAINT FK_account_id
 		FOREIGN KEY (account_id)
 		REFERENCES Accounts(id)

@@ -10,6 +10,8 @@ public interface ApplicationService {
 
     public Transaction getTransaction(String transactionID);
 
+    //public TransactionWrapper getTransactionInfo(String transactionID);
+
     public List<Transaction> searchTransactions(String searchString);
 
     public List<Account> getAccounts();
@@ -31,6 +33,17 @@ public interface ApplicationService {
     public Case getCase(int caseID);
 
     public Case setCaseScore(int caseID, int score, String priority);
+
+    // Fraud detection
+    List<Transaction> colourTransactionsForAccount(String accountID);
+    List<Transaction> flagTransactionsForAccount(String accountID);
+    List<Transaction> flagAllTransactions();
+
+    // Cases
+    List<Case> getCases();
+    Case createCase(String accountID, List<String> transactionIDs, String description);
+    Case updateCase(int caseID, Case updatedCase);
+    void deleteCase(int caseID);
 
     public Case addCaseForAccount(String accountID);
 
