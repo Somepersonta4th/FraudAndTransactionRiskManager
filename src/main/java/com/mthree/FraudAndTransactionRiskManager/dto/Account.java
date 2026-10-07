@@ -18,6 +18,24 @@ public class Account {
     private String mask;
     private String type;
     private String subType;
+    private String country;
+    private String city;
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public String getId() {
         return id;

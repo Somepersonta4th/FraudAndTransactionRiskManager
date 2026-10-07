@@ -24,7 +24,9 @@ public class TransactionDaoJDBC implements TransactionDao{
 
     @Override
     public List<Transaction> getTransactions(){
-        return jdbc.query("SELECT * FROM Transactions", new TransactionMapper());
+        List<Transaction> list = jdbc.query("SELECT * FROM Transactions", new TransactionMapper());
+        System.out.println(list.get(0).getCity());
+        return list;
     }
 
     @Override

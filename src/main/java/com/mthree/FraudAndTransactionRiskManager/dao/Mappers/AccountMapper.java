@@ -16,6 +16,20 @@ public class AccountMapper implements RowMapper<Account> {
         temp.setCurrent("current");
         temp.setName(rs.getString("account_name"));
         temp.setCurrencyCode(rs.getString("iso_currency_code"));
+
+        if (temp.getCurrencyCode().equals("USD")){
+            temp.setCity("New York");
+            temp.setCountry("USA");
+        }
+        else if (temp.getCurrencyCode().equals("GBP")){
+            temp.setCity("London");
+            temp.setCountry("England");
+        }
+        else if (temp.getCurrencyCode().equals("EUR")){
+            temp.setCity("Madrid");
+            temp.setCountry("Spain");
+        }
+
         temp.setMask(rs.getString("mask"));
         temp.setType(rs.getString("account_type"));
         temp.setSubType(rs.getString("account_subtype"));
