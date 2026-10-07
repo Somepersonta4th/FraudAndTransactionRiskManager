@@ -140,7 +140,7 @@ public class Controller {
     }
 
     // gets case from accountID
-    @PostMapping("accounts/{accountID}/cases")
+    @GetMapping("accounts/{accountID}/cases")
     public List<Case> getCaseForAccount(@PathVariable String accountID) {
         auditService.writeToAudit("getCaseForAccount:" + accountID);
         return applicationService.getCasesForAccount(accountID);
