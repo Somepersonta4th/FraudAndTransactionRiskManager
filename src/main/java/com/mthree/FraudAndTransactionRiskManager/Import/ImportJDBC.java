@@ -105,10 +105,16 @@ public class ImportJDBC implements Import{
                 pending = 1;
             }
 
+            String merchantName = (String) ob.get("merchant_name");
+            String merchantEntityId = (String) ob.get("merchant_entity_id");
+            String merchantCategoryCode = (String) ob.get("merchant_category_code");
 
 
-            String sql = "INSERT INTO transactions(id, account_id, amount, iso_currency_code, description,primary_category, detailed_category, payment_channel, date_transaction, date_authorised, city, country, pending) VALUES('" + id + "', '" + accountId + "', '" + amount + "', '" + currencyCode + "', '" + description + "', '" + primaryCategory + "', '" + detailedCategory + "', '" + channel + "', '" + dateTransaction + "', '" + dateAuthorised + "', '" + city + "', '" + country + "', '" + pending + "')";
+            String sql = "INSERT INTO transactions(id, account_id, amount, iso_currency_code, description,primary_category, detailed_category, payment_channel, date_transaction, date_authorised, city, country, pending, merchant_name) VALUES('" + id + "', '" + accountId + "', '" + amount + "', '" + currencyCode + "', '" + description + "', '" + primaryCategory + "', '" + detailedCategory + "', '" + channel + "', '" + dateTransaction + "', '" + dateAuthorised + "', '" + city + "', '" + country + "', '" + pending + "'," + "')";
             jdbc.update(sql);
+
+
+
         }
     }
 
