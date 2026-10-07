@@ -76,7 +76,7 @@ public class ImportJDBC implements Import{
                 amount = Long.toString((Long) ob.get("amount"));
             }
             String currencyCode = (String) ob.get("iso_currency_code");
-            String description = (String) ob.get("description");
+            String description = (String) ob.get("name");
 
             JSONObject PFC = (JSONObject) ob.get("personal_finance_category");
             String primaryCategory = (String) PFC.get("primary");
