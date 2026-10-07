@@ -5,6 +5,7 @@ import com.mthree.FraudAndTransactionRiskManager.dao.Mappers.TransactionMapper;
 import com.mthree.FraudAndTransactionRiskManager.dto.Transaction;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class TransactionDaoJDBC implements TransactionDao{
     private final JdbcTemplate jdbc;
 

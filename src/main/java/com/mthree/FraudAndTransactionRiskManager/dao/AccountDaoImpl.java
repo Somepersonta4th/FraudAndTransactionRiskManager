@@ -12,7 +12,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 public class AccountDaoImpl implements AccountDao {
 
     MysqlDataSource ds;

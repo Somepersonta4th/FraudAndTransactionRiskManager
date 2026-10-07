@@ -13,8 +13,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@Repository
 public class TransactionDaoImpl implements TransactionDao{
     MysqlDataSource ds;
 
